@@ -1,6 +1,6 @@
 {
   "name": "piebird-tern-ghostty-style",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "omp in Tern, drawn the way omp looks in Ghostty: one box per tool call, thoughts left open, bash as $ command, compact diffs and replies",
   "private": true,
   "type": "module",

@@ -1,7 +1,8 @@
 # piebird-tern-ghostty-style
 
 omp in [Tern](https://docs.stencil.so/tern/), drawn the way omp looks in Ghostty: one box per
-tool call, thoughts left open, bash as `$ command`, compact diffs and replies. Rendered Markdown
+tool call, thoughts left open, bash as `$ command`, compact diffs and replies, and a composer as
+wide as the transcript, so a full status line has room for the session cost. Rendered Markdown
 files get room for wide tables. On Tern's phone apps, omp keeps its Send button, which Tern's
 phone layout otherwise hides along with keyboard shortcut hints.
 

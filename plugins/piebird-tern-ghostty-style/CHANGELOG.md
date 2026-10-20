@@ -27,3 +27,14 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   shortcut hints, and these two buttons are drawn as nothing but one: a prompt went only with the
   keyboard's Enter key, and the transcript had no button to close it. Version 0.1.1, so omp
   replaces a look an earlier version installed in Tern (after `omp plugin upgrade`).
+
+### Fixed
+
+- On Tern's phone apps, Send shows an up arrow instead of a hatched box. Its key cap is the
+  character ⏎, which the apps' built-in font lacks on Android; the arrow is drawn in CSS, in the
+  button's own colour. Version 0.1.2, so omp replaces 0.1.1 in Tern.
+- With a full status line, such as omp's `nerd` preset, the composer bar has room for the session
+  cost again. Reader capped the composer at 736px under an 880px transcript, and Tern cut the
+  cost, the thinking level and the folder from the bar for lack of room. The composer is now as
+  wide as the transcript, as omp's status line spans the terminal in Ghostty. Narrow panes and
+  phones are unchanged.

@@ -188,3 +188,13 @@
 .sf-chat-reader[data-surface^="omp."] .sf-col[data-role^="omp.editor"] .sf-editor * {
 	font-style: normal;
 }
+
+/* The composer as wide as the transcript, as omp's editor and status line span the terminal in
+   Ghostty. Reader caps it at 736px under an 880px transcript (--rd-measure, set on the transcript's
+   own region, so it doesn't reach the dock; seen in Tern 0.9.4). With a full status line (omp's
+   nerd preset) the bar runs out of room there, and Tern cuts the session cost, the thinking level
+   and the folder from it. A narrower pane still fills its width less 24px, as before; phones keep
+   their own full-width composer (their rule is more specific). */
+.sf-chat-reader[data-surface^="omp."] .sf-col[data-role^="omp.editor"] {
+	max-width: 880px;
+}

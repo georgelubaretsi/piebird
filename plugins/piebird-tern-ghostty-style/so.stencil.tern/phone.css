@@ -7,9 +7,9 @@
    - the esc corner button closing a subagent's transcript (an omp.btn holding only a kbd): phone
      keyboards have no Esc key.
 
-   These show them again, drawn as on the desktop (Send as a round ⏎ in Reader). Key caps beside
-   a label stay hidden: the label is the button there. Two rules, so a selector Tern rejects
-   drops only its own. */
+   These show them again, drawn as on the desktop (Send as a round button in Reader). Key caps
+   beside a label stay hidden: the label is the button there. Separate rules, so a selector Tern
+   rejects drops only its own. */
 html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"],
 html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"] .kbd {
 	display: inline-flex;
@@ -18,4 +18,37 @@ html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"] .kbd
 html.tn-phone [data-surface^="omp."] [data-role="omp.btn"] > .sf-kbd:only-child,
 html.tn-phone [data-surface^="omp."] [data-role="omp.btn"] > .sf-kbd:only-child .kbd {
 	display: inline-flex;
+}
+
+/* Send's key cap is the character ⏎, which the phone apps' built-in Berkeley Mono lacks: Android
+   draws a hatched box in its place (seen in Tern 0.9.5). The character goes and an up arrow takes
+   its place, drawn in the key cap's own colour, so hover and the muted tone while dictating still
+   apply: a 12px-wide, 7px-tall triangle (a box of no size with only a bottom border showing, its
+   sides transparent) and a 2px stem under it. A chevron turned 45° left seams at its corner. */
+html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"] .kbd {
+	position: relative;
+	font-size: 0;
+}
+
+html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"] .kbd::before {
+	content: "";
+	position: absolute;
+	top: calc(26% + 6px);
+	left: calc(50% - 1px);
+	width: 2px;
+	height: calc(48% - 6px);
+	border-radius: 1px;
+	background-color: currentColor;
+}
+
+html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"] .kbd::after {
+	content: "";
+	position: absolute;
+	top: 26%;
+	left: calc(50% - 6px);
+	width: 0;
+	height: 0;
+	border-right: 6px solid transparent;
+	border-bottom: 7px solid currentColor;
+	border-left: 6px solid transparent;
 }
