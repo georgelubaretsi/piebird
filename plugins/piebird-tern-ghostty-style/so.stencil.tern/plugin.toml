@@ -1,7 +1,7 @@
 schema = 1
 id = "piebird-tern-ghostty-style"
 name = "Tern Ghostty style"
-version = "0.1.2"
+version = "0.1.3"
 description = "Draws omp's native surfaces in Tern the way omp looks in Ghostty, keeps omp's Send button on phones, and gives rendered Markdown files room for wide tables."
 window = "window.luau"
 styles = ["tools.css", "text.css", "diffs.css", "documents.css", "phone.css"]

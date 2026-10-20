@@ -189,12 +189,14 @@
 	font-style: normal;
 }
 
-/* The composer as wide as the transcript, as omp's editor and status line span the terminal in
-   Ghostty. Reader caps it at 736px under an 880px transcript (--rd-measure, set on the transcript's
-   own region, so it doesn't reach the dock; seen in Tern 0.9.4). With a full status line (omp's
-   nerd preset) the bar runs out of room there, and Tern cuts the session cost, the thinking level
-   and the folder from it. A narrower pane still fills its width less 24px, as before; phones keep
-   their own full-width composer (their rule is more specific). */
+/* A composer wide enough for omp's full status line. Reader caps it at 736px (seen in Tern
+   0.9.4), and with omp's nerd preset the bar runs out of room there: Tern cuts the session cost,
+   the thinking level and the folder from it. Even the transcript's 880px is too narrow once a
+   long session's cost runs to hundreds. Such a bar measured about 990px with every item showing
+   (model, folder, nine status items, cost, Send), about 1,080px with the thinking level and mic a
+   signed-in session adds; 1200px leaves room for a longer folder, branch or cost, without a
+   pane-wide empty bar. Narrower panes still get their width less 24px (Reader's own rule);
+   phones keep their own full-width composer (their rule is more specific). */
 .sf-chat-reader[data-surface^="omp."] .sf-col[data-role^="omp.editor"] {
-	max-width: 880px;
+	max-width: 1200px;
 }

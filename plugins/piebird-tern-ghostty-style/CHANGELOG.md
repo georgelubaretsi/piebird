@@ -34,7 +34,7 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   character ⏎, which the apps' built-in font lacks on Android; the arrow is drawn in CSS, in the
   button's own colour. Version 0.1.2, so omp replaces 0.1.1 in Tern.
 - With a full status line, such as omp's `nerd` preset, the composer bar has room for the session
-  cost again. Reader capped the composer at 736px under an 880px transcript, and Tern cut the
-  cost, the thinking level and the folder from the bar for lack of room. The composer is now as
-  wide as the transcript, as omp's status line spans the terminal in Ghostty. Narrow panes and
-  phones are unchanged.
+  cost again. Reader capped the composer at 736px, and Tern cut the cost, the thinking level and
+  the folder from the bar for lack of room. The composer now grows to 1200px in a wide pane: with
+  every item showing, that bar needs about 1,080px (0.1.2 made it 880px, as wide as the
+  transcript, which a long session's cost still outgrew). Version 0.1.3. Phones are unchanged.
