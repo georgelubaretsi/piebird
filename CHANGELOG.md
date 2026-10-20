@@ -296,3 +296,5 @@ change in a new month moves them into a section for the month they were last cha
 - `bun run test` runs the tests under `tools/` only (`bun test ./tools`). As a bare word, `tools`
   matched any test path containing it, so the test files of a source cloned into `reference/`
   ran too and failed.
+- `golangci-lint fmt` leaves `reference/` alone (`.golangci.yml`). It walks every Go file under
+  the module, so the lint failed on upstream code cloned there, such as the Tern SDK's examples.

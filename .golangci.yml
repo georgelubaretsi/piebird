@@ -92,3 +92,8 @@ formatters:
     gofumpt:
       # Without it, gofumpt takes the module path for the standard library's.
       module-path: piebird.dev/plugins
+  exclusions:
+    paths:
+      # Upstream clones (bun tools/sync-references.ts), ignored by git and never hand-edited:
+      # `fmt` walks every file under the module, nested modules included.
+      - ^reference/

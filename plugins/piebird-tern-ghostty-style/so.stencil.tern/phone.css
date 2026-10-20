@@ -1,0 +1,21 @@
+/* piebird-tern-ghostty-style, phone: omp's buttons that are nothing but a key cap, on Tern's phone
+   clients (iPhone, Android, a browser tab on a phone). Tern's phone sheet hides every key cap
+   (.kbds, the kbd node's .sf-kbd, and each .kbd in it) as a shortcut hint a touch screen has no use
+   for (seen in Tern 0.9.4 and 0.9.5). Where a key cap is the whole button, the button goes with it:
+
+   - Send (omp.composer.send, a kbd node itself): the keyboard's Enter key is left to send a prompt;
+   - the esc corner button closing a subagent's transcript (an omp.btn holding only a kbd): phone
+     keyboards have no Esc key.
+
+   These show them again, drawn as on the desktop (Send as a round ⏎ in Reader). Key caps beside
+   a label stay hidden: the label is the button there. Two rules, so a selector Tern rejects
+   drops only its own. */
+html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"],
+html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"] .kbd {
+	display: inline-flex;
+}
+
+html.tn-phone [data-surface^="omp."] [data-role="omp.btn"] > .sf-kbd:only-child,
+html.tn-phone [data-surface^="omp."] [data-role="omp.btn"] > .sf-kbd:only-child .kbd {
+	display: inline-flex;
+}

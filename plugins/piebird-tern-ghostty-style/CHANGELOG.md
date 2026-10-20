@@ -22,3 +22,8 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   and says so in the chat. A linked copy and one turned off in Tern's settings are left alone.
 - Supported hosts: omp, and Tern through omp.
 - README, with a demo video: the same omp session in Tern's own look, then in this one.
+- On Tern's phone apps (iPhone, Android, a browser tab on a phone), omp's Send button and the
+  esc button that closes a subagent's transcript show again. Tern's phone layout hides keyboard
+  shortcut hints, and these two buttons are drawn as nothing but one: a prompt went only with the
+  keyboard's Enter key, and the transcript had no button to close it. Version 0.1.1, so omp
+  replaces a look an earlier version installed in Tern (after `omp plugin upgrade`).
