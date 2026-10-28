@@ -1,0 +1,9 @@
+{
+  "error": {
+    "id": "redirected",
+    "variables": {
+      "query": "osu! replay dataset",
+      "to": "bang.example/search"
+    }
+  }
+}

@@ -161,6 +161,7 @@ error-secret-store = cannot { $doing ->
     }: { $cause }
 error-signed-out = Kagi no longer accepts the kept session (it signed it out)
 error-http-status = Kagi answered HTTP { $status } for { $path }
+error-redirected = Kagi sent this to { $to } instead of answering; the session is fine. A word with ! in the query is a bang, Kagi's shortcut to another site: leave the ! out to search for the word
 error-cannot-reach = cannot reach Kagi: { $cause }
 error-reading = reading { $what ->
         [results] Kagi's result page

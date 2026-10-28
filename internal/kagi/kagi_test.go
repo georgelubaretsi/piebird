@@ -3,6 +3,8 @@ package kagi
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -94,6 +96,33 @@ func TestSignedOutSessionsNeedASignIn(t *testing.T) {
 	c.Token = goodToken
 	if err := c.SignedIn(ctx); err != nil {
 		t.Errorf("good session: %v", err)
+	}
+}
+
+func TestAnswersElsewhereLeaveTheSessionSignedIn(t *testing.T) {
+	// A bang sends a search to another site, and a 403 can refuse one request, while Kagi's home
+	// page still takes the session: neither asks for a sign-in.
+	c, _ := fakeKagi(t)
+	for _, q := range []string{"osu! replay dataset", "!w kagi"} {
+		_, err := c.Search(ctx, Query{Text: q})
+		if declared := new(ops.Error); errors.Is(err, ErrSignIn) || !errors.As(err, &declared) ||
+			declared.ID != "redirected" || declared.Variables["to"] != "bang.example/search" {
+			t.Errorf("%q: err %v", q, err)
+		}
+	}
+	forbidden := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" {
+			_, _ = w.Write([]byte("<html><title>Kagi Search</title></html>"))
+			return
+		}
+		w.WriteHeader(http.StatusForbidden)
+	}))
+	t.Cleanup(forbidden.Close)
+	c.Base = forbidden.URL
+	_, err := c.Search(ctx, Query{Text: "x"})
+	if declared := new(ops.Error); errors.Is(err, ErrSignIn) || !errors.As(err, &declared) ||
+		declared.ID != "http-status" || declared.Variables["status"] != http.StatusForbidden {
+		t.Errorf("403: err %v", err)
 	}
 }
 

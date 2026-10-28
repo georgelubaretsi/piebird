@@ -76,6 +76,11 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- A search Kagi sends to another site, as it does a query with a bang such as `osu!`, no longer
+  counts as a sign-out. It said Kagi had signed the session out and opened the sign-in page in
+  your browser, and in `kagi_batch_search` it failed every query. Now the tool says where Kagi
+  sent it and to leave the `!` out. A 403 for one request isn't a sign-out either: only Kagi's
+  home page refusing the session is.
 - GPT models in omp can search with Kagi: omp gets the tools with `strict: false`, so a GPT model
   sends only the arguments it uses. Before, it filled every one, `time` together with
   `from_date` and `to_date`, and every `kagi_search` and `kagi_batch_search` was refused.

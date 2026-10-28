@@ -67,25 +67,53 @@ func (c *Client) request(ctx context.Context, method, path string, q url.Values)
 	return http.NewRequestWithContext(ctx, method, c.Base+path+"?"+q.Encode(), http.NoBody)
 }
 
-// session sends req with the session cookie and returns the body.
+// refused says Kagi didn't serve the request here: a redirect, 401 or 403.
+func refused(status int) bool {
+	return status >= 300 && status < 400 || status == http.StatusUnauthorized || status == http.StatusForbidden
+}
+
+// session sends req with the session cookie and returns the body. A redirect, 401 or 403 means
+// a signed-out session only when Kagi's home page refuses the session too: a query sends itself
+// elsewhere (a bang such as `osu!` sends a search to that site), and the session is fine then.
 func (c *Client) session(req *http.Request) (string, error) {
-	if c.Token == "" {
-		return "", signIn("no-session")
-	}
-	req.AddCookie(&http.Cookie{Name: "kagi_session", Value: c.Token})
-	body, status, err := c.do(req)
+	body, status, location, err := c.send(req)
 	if err != nil {
 		return "", err
 	}
+	if refused(status) {
+		if err := c.SignedIn(req.Context()); err != nil {
+			return "", err
+		}
+		if location != "" {
+			return "", fail("redirected", map[string]any{"to": redirectTarget(req.URL, location)})
+		}
+	}
 	switch {
-	case status >= 300 && status < 400, status == http.StatusUnauthorized, status == http.StatusForbidden:
-		return "", signIn("signed-out")
 	case status != http.StatusOK:
 		return "", fail("http-status", map[string]any{"status": status, "path": req.URL.Path})
 	case loggedOut(body):
 		return "", signIn("signed-out")
 	}
 	return body, nil
+}
+
+// send sends req with the session cookie.
+func (c *Client) send(req *http.Request) (body string, status int, location string, err error) {
+	if c.Token == "" {
+		return "", 0, "", signIn("no-session")
+	}
+	req.AddCookie(&http.Cookie{Name: "kagi_session", Value: c.Token})
+	return c.do(req)
+}
+
+// redirectTarget is where location, relative to from, points: its host and path, without the
+// query, which repeats the search.
+func redirectTarget(from *url.URL, location string) string {
+	to, err := from.Parse(location)
+	if err != nil {
+		return location
+	}
+	return to.Host + to.Path
 }
 
 // page loads a page of the web product with the session.
@@ -108,7 +136,7 @@ func (c *Client) public(ctx context.Context, base, path string, q url.Values) (s
 	if err != nil {
 		return "", err
 	}
-	body, status, err := c.do(req)
+	body, status, _, err := c.do(req)
 	if err != nil {
 		return "", err
 	}
@@ -118,24 +146,38 @@ func (c *Client) public(ctx context.Context, base, path string, q url.Values) (s
 	return body, nil
 }
 
-func (c *Client) do(req *http.Request) (body string, status int, err error) {
+func (c *Client) do(req *http.Request) (body string, status int, location string, err error) {
 	for k, v := range c.Headers {
 		req.Header[k] = v
 	}
 	resp, err := c.HTTP.Do(req)
 	if err != nil {
-		return "", 0, failWith("cannot-reach", err, nil)
+		return "", 0, "", failWith("cannot-reach", err, nil)
 	}
 	defer func() { _ = resp.Body.Close() }()
 	b, err := io.ReadAll(io.LimitReader(resp.Body, maxBody))
 	if err != nil {
-		return "", 0, failReading("answer", err)
+		return "", 0, "", failReading("answer", err)
 	}
-	return string(b), resp.StatusCode, nil
+	return string(b), resp.StatusCode, resp.Header.Get("Location"), nil
 }
 
-// SignedIn reports whether Kagi accepts the client's session, by loading its home page.
+// SignedIn reports whether Kagi accepts the client's session, by loading its home page: a
+// redirect, 401 or 403 there, or the landing page, means it doesn't.
 func (c *Client) SignedIn(ctx context.Context) error {
-	_, err := c.page(ctx, "/", url.Values{})
-	return err
+	req, err := c.request(ctx, http.MethodGet, "/", url.Values{})
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Accept", "text/html")
+	body, status, _, err := c.send(req)
+	switch {
+	case err != nil:
+		return err
+	case refused(status), status == http.StatusOK && loggedOut(body):
+		return signIn("signed-out")
+	case status != http.StatusOK:
+		return fail("http-status", map[string]any{"status": status, "path": "/"})
+	}
+	return nil
 }

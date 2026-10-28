@@ -489,7 +489,7 @@ The agent calls `kagi_news` with `{"category":"astrology"}`.
 Kagi News has no category "astrology" today; kagi_news_categories lists the 3 it has
 ```
 
-From [`error-no-category`](../../plugins/piebird-kagi-search/core/model.ftl#L174).
+From [`error-no-category`](../../plugins/piebird-kagi-search/core/model.ftl#L175).
 
 ## 18. Raw mode outside Kagi
 
@@ -501,7 +501,7 @@ The agent calls `kagi_raw_read` with `{"request":"https://example.com/"}`.
 only kagi.com and news.kagi.com, not example.com: the session goes to Kagi alone
 ```
 
-From [`error-host`](../../plugins/piebird-kagi-search/core/model.ftl#L182).
+From [`error-host`](../../plugins/piebird-kagi-search/core/model.ftl#L183).
 
 ## 19. Raw mode setting the cookie
 
@@ -513,7 +513,7 @@ The agent calls `kagi_raw_write` with `{"request":"POST /settings\nCookie: kagi_
 leave out Cookie and Host: the session and the host are set for Kagi
 ```
 
-From [`error-raw-write-cookie`](../../plugins/piebird-kagi-search/core/model.ftl#L180).
+From [`error-raw-write-cookie`](../../plugins/piebird-kagi-search/core/model.ftl#L181).
 
 ## Skills and rules
 

@@ -283,6 +283,10 @@ change in a new month moves them into a section for the month they were last cha
 
 ### Fixed
 
+- `internal/kagi` takes a redirect, 401 or 403 for a sign-out only when Kagi's home page refuses
+  the session too (`SignedIn`); otherwise a redirect is the declared error `redirected`, with
+  where it pointed, and a 401 or 403 is `http-status`. The fake Kagi (`kagitest`) sends a query
+  with a bang to another site, as Kagi does.
 - The kit registers each omp tool with `strict: false` (`kit/omp/tools.ts`). Without the flag omp
   sends OpenAI the tool with no strict flag and its optional arguments not nullable, and GPT
   models filled every argument with a made-up value, which tools with exclusive arguments

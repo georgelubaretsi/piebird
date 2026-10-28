@@ -16,6 +16,7 @@
   { "name": "search-sign-in-needed", "op": "search", "input": { "query": "rust async runtime" }, "session": "none" },
   { "name": "search-dates-order", "op": "search", "input": { "query": "go http client timeout", "from_date": "2026-10-12", "to_date": "2026-10-01" } },
   { "name": "batch-search-empty-query", "op": "batch-search", "input": { "queries": ["go http client timeout", " "] } },
+  { "name": "batch-search-bang", "op": "batch-search", "input": { "queries": ["go http client timeout", "osu! replay dataset"] } },
   { "name": "news-no-category", "op": "news", "input": { "category": "astrology" } },
   { "name": "raw-read-host", "op": "raw-read", "input": { "request": "https://example.com/" } },
   { "name": "raw-write-cookie", "op": "raw-write", "input": { "request": "POST /settings\nCookie: kagi_session=other\n\nx=1" } }

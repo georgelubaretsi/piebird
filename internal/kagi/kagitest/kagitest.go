@@ -6,6 +6,7 @@ import (
 	"embed"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"sync"
 	"testing"
 )
@@ -69,15 +70,31 @@ func serve(name string) http.HandlerFunc {
 	return func(w http.ResponseWriter, _ *http.Request) { _, _ = w.Write(Fixture(name)) }
 }
 
+// Bang is where the fake sends a query with a bang, a word starting or ending with !, as Kagi
+// sends `osu! replay` to osu!'s own site.
+const Bang = "https://bang.example/search"
+
 // page serves a page of the web product to the session, and the sign-in redirect to anyone else.
 func page(name string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if !signedIn(r) {
+		switch {
+		case !signedIn(r):
 			http.Redirect(w, r, "/signin", http.StatusFound)
-			return
+		case hasBang(r.URL.Query().Get("q")):
+			http.Redirect(w, r, Bang+"?q=replay", http.StatusFound)
+		default:
+			serve(name)(w, r)
 		}
-		serve(name)(w, r)
 	}
+}
+
+func hasBang(q string) bool {
+	for word := range strings.FieldsSeq(q) {
+		if strings.HasPrefix(word, "!") || strings.HasSuffix(word, "!") {
+			return true
+		}
+	}
+	return false
 }
 
 func routes() *http.ServeMux {

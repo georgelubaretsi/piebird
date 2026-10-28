@@ -91,6 +91,7 @@
         "env-session-refused",
         "secret-store",
         "http-status",
+        "redirected",
         "cannot-reach",
         "reading"
       ],
@@ -214,6 +215,7 @@
         "env-session-refused",
         "secret-store",
         "http-status",
+        "redirected",
         "cannot-reach",
         "reading"
       ],
@@ -271,6 +273,7 @@
         "env-session-refused",
         "secret-store",
         "http-status",
+        "redirected",
         "cannot-reach",
         "reading"
       ],
@@ -443,6 +446,7 @@
         "env-session-refused",
         "secret-store",
         "http-status",
+        "redirected",
         "cannot-reach",
         "reading"
       ],
