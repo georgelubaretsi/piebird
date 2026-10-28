@@ -1,0 +1,98 @@
+/* piebird-tern-ghostty-style, colours: omp's dark-arctic theme, as Tern used to get it from omp.
+   omp 18.13.3 stopped sending Tern its palette (the surface protocol's `t`), and Tern 0.9.7 sets
+   none of the palette's variables even for an omp that still sends it, so the look's fills fell
+   back: your messages as a bar the colour of their text, every tool box the same near-black.
+   These are the variables Tern set from that palette (Tern's docs: styles/variables.md, "Program
+   palette"), on omp's surfaces only: each text token as --sf-p-<token>, the span and tone colours,
+   and the fills as 60% tints. Text colours are lifted, as Tern lifted them, to 4.5:1 (3:1 for
+   quiet tokens) over the page and over each tint. */
+[data-surface^="omp."] {
+	/* every text token of the theme */
+	--sf-p-accent: #88c0d0;
+	--sf-p-border: #5e81ac;
+	--sf-p-borderAccent: #88c0d0;
+	--sf-p-borderMuted: #6a7383;
+	--sf-p-success: #a3be8c;
+	--sf-p-error: #c97980;
+	--sf-p-warning: #ebcb8b;
+	--sf-p-muted: #6a7383;
+	--sf-p-dim: #6a7280;
+	--sf-p-thinkingText: #6a7383;
+	--sf-p-customMessageLabel: #b48ead;
+	--sf-p-toolOutput: #6a7383;
+	--sf-p-mdHeading: #88c0d0;
+	--sf-p-mdLink: #81a1c1;
+	--sf-p-mdLinkUrl: #6a7383;
+	--sf-p-mdCode: #b48ead;
+	--sf-p-mdCodeBlock: #d8dee9;
+	--sf-p-mdCodeBlockBorder: #6a7280;
+	--sf-p-mdQuote: #6a7383;
+	--sf-p-mdQuoteBorder: #6a7280;
+	--sf-p-mdHr: #6a7280;
+	--sf-p-mdListBullet: #88c0d0;
+	--sf-p-toolDiffAdded: #a3be8c;
+	--sf-p-toolDiffRemoved: #c97980;
+	--sf-p-toolDiffContext: #6a7383;
+	--sf-p-link: #81a1c1;
+	--sf-p-syntaxComment: #66728c;
+	--sf-p-syntaxKeyword: #7593b8;
+	--sf-p-syntaxFunction: #88c0d0;
+	--sf-p-syntaxVariable: #d8dee9;
+	--sf-p-syntaxString: #a3be8c;
+	--sf-p-syntaxNumber: #b48ead;
+	--sf-p-syntaxType: #8fbcbb;
+	--sf-p-syntaxOperator: #81a1c1;
+	--sf-p-syntaxPunctuation: #e5e9f0;
+	--sf-p-thinkingOff: #6a7280;
+	--sf-p-thinkingMinimal: #8b919e;
+	--sf-p-thinkingLow: #7593b8;
+	--sf-p-thinkingMedium: #81a1c1;
+	--sf-p-thinkingHigh: #b48ead;
+	--sf-p-thinkingXhigh: #c8a0d1;
+	--sf-p-bashMode: #88c0d0;
+	--sf-p-statusLineSep: #737373;
+	--sf-p-statusLineModel: #b48ead;
+	--sf-p-statusLinePath: #8fbcbb;
+	--sf-p-statusLineGitClean: #a3be8c;
+	--sf-p-statusLineGitDirty: #ebcb8b;
+	--sf-p-statusLineContext: #7593b8;
+	--sf-p-statusLineSpend: #88c0d0;
+	--sf-p-statusLineStaged: #87af87;
+	--sf-p-statusLineDirty: #d7af87;
+	--sf-p-statusLineUntracked: #87afaf;
+	--sf-p-statusLineOutput: #af87af;
+	--sf-p-statusLineCost: #af87af;
+	--sf-p-statusLineSubagents: #88c0d0;
+	--sf-p-pythonMode: #f0c040;
+	/* span token colours, from the palette sources Tern reads them from */
+	--sf-c-muted: #6a7383;
+	--sf-c-dim: #6a7280;
+	--sf-c-accent: #88c0d0;
+	--sf-c-success: #a3be8c;
+	--sf-c-warning: #ebcb8b;
+	--sf-c-error: #c97980;
+	--sf-c-info: #8fbcbb;
+	--sf-c-link: #81a1c1;
+	--sf-c-num: #b48ead;
+	--sf-c-path: #8fbcbb;
+	--sf-c-ins: #a3be8c;
+	--sf-c-del: #c97980;
+	--sf-c-code: #b48ead;
+	/* tones */
+	--sf-accent: #88c0d0;
+	--sf-ok: #a3be8c;
+	--sf-warn: #ebcb8b;
+	--sf-bad: #c97980;
+	--sf-muted: #6a7383;
+	/* fills, at 60% over Tern's surface */
+	--sf-tint-success: rgb(31 40 53 / 60%); /* toolSuccessBg #1f2835 */
+	--sf-tint-error: rgb(45 36 40 / 60%); /* toolErrorBg #2d2428 */
+	--sf-tint-pending: rgb(36 41 51 / 60%); /* toolPendingBg #242933 */
+	--sf-tint-user: rgb(31 36 48 / 60%); /* userMessageBg #1f2430 */
+	--sf-tint-custom: rgb(42 42 60 / 60%); /* customMessageBg #2a2a3c */
+	--sf-tint-neutral: rgb(36 41 51 / 60%); /* cardBg #242933 */
+	--sf-tint-info: rgb(53 58 72 / 60%); /* infoBg #353a48 */
+	--sf-sel: rgb(59 66 82 / 60%); /* selectedBg #3b4252 */
+	--sf-mark-bg: rgb(59 66 82 / 60%); /* selectedBg #3b4252 */
+	--sf-status-bg: rgb(26 31 43 / 60%); /* statusLineBg #1a1f2b */
+}

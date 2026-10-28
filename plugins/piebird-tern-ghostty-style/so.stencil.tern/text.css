@@ -156,7 +156,8 @@
 	max-width: none;
 	padding: var(--sf-lh) var(--sf-cw);
 	border-radius: 0;
-	background: rgb(from var(--sf-tint-user, var(--l1)) r g b / 1);
+	/* palette.css sets the tint; never --l1 here: made opaque, it is the text's own colour */
+	background: rgb(from var(--sf-tint-user, #1f2430) r g b / 1);
 }
 
 .sf-chat-reader[data-surface^="omp."] .sf-card[data-role="omp.user"] .sf-md .md {

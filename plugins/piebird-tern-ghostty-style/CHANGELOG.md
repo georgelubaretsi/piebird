@@ -30,6 +30,10 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Your messages are a dark bar again, not a white one you can't read, and tool boxes take omp's
+  success, pending and error tints again, with omp 18.13.3 or Tern 0.9.7, which no longer pass
+  omp's colours to Tern. The look brings omp dark-arctic's palette itself (`palette.css`).
+  Version 0.1.5, so omp replaces 0.1.4 in Tern.
 - Bold around inline code stays bold, in a table and out: a reply's bold `after-kagi`, such as
   the default marked among choices, showed as plain code, since Tern gives code a weight of its
   own. Plain bold in table cells was bold already. Version 0.1.4, so omp replaces 0.1.3 in Tern.

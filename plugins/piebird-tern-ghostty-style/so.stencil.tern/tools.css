@@ -3,8 +3,8 @@
 
 /* One box per tool call on Reader: the command and its output share one well, as in
    Ghostty, instead of a bare head row over a separate output well. Filled with omp's
-   own tool backgrounds (toolSuccessBg / toolPendingBg / toolErrorBg), which Tern
-   exposes as 60% tints; made opaque so they match Ghostty exactly. */
+   own tool backgrounds (toolSuccessBg / toolPendingBg / toolErrorBg), the 60% tints
+   palette.css sets; made opaque so they match Ghostty exactly. */
 .sf-chat-reader[data-surface^="omp."] .sf-tool.card:not([data-role="omp.tool.wait"]) {
 	padding: 8px 12px;
 	border-radius: 10px;
