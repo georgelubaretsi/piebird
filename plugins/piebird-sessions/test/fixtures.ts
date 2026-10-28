@@ -45,7 +45,9 @@ export class Sessions {
 	/** The tool's text, split into lines: what it shows, then where to go next. `current` is this session's journal. */
 	async read(params: ReadParams, current?: string): Promise<string[]> {
 		const list = { kind: "folder" as const, folder: this.folder, ...(current === undefined ? {} : { current }) };
-		const context = { roots: [this.root], list, home: os.homedir() };
+		// A home that holds none of the sessions: with the real one, a temp folder under it (CI's
+		// runner) would show as ~/..., which the expected texts don't.
+		const context = { roots: [this.root], list, home: path.join(this.root, "home") };
 		return (await readSession(bunIo(), params, context)).text.split("\n");
 	}
 
