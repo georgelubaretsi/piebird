@@ -47,6 +47,12 @@
 	color: var(--og-code);
 }
 
+/* bold around inline code stays bold: Tern gives code a weight of its own, so `**`x`**`
+   showed as plain code, in tables (a default marked bold among choices) and out */
+.sf-chat-reader[data-surface^="omp."] [data-role^="omp.assistant"] > .sf-md .md :is(strong, b) code {
+	font-weight: inherit;
+}
+
 /* thoughts recede */
 .sf-chat-reader[data-surface^="omp."] .sf-section[data-role^="omp.thinking"] > .sf-section-body {
 	color: var(--og-quiet);

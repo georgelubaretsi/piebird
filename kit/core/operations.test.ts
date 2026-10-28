@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { Catalog, type ModelText } from "./model";
-import { parseOperations } from "./operations";
+import { parseOperations, withoutNulls } from "./operations";
 
 const model = new Catalog<Record<string, undefined>>("find = Finds.\n    .query = What.\nlist = Lists.\n");
 
@@ -49,4 +49,10 @@ describe("parseOperations", () => {
 		expect(() => parseOperations(SOURCE, text(["find", "list"]))).toThrow("model.ftl: no find.query");
 		expect(() => parseOperations(SOURCE, text(["find.query", "list"]))).toThrow("model.ftl: no find");
 	});
+});
+
+test("withoutNulls leaves out the fields set to null and keeps every other value as sent", () => {
+	const kept = { query: "bun", limit: 0, json: false, note: "", list: [null], nested: { a: null } };
+	expect(withoutNulls({ ...kept, time: null, format: null })).toEqual(kept);
+	for (const input of [null, "x", 3, [null], {}]) expect(withoutNulls(input)).toEqual(input);
 });

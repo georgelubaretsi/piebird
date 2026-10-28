@@ -53,3 +53,13 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   with how to search it, rather than refusing: `find` searches one session.
 - Renamed from `sessions` to `piebird-sessions`, one name for the folder, `plugin.json`,
   `package.json` and the catalog: install it as `piebird-sessions@piebird`.
+
+### Fixed
+
+- GPT models in omp can use `session_read`: omp gets it with `strict: false`, so a GPT model
+  sends only the arguments it uses. Before, it filled every one, `find: ""` together with
+  `before` and `after`, and every read was refused.
+- An argument set to null counts as left out, as callers that send every argument mean it:
+  `find: null` was refused as not text.
+- `find` given with `before` or `after` is refused with how to fix it: leave them out to search,
+  or `find` out to read a page around the line.

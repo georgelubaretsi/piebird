@@ -92,7 +92,9 @@ test("dispatch runs the handler of the operation the full name names", async () 
 	expect(await dispatch(operations, handlers, "mcp__piebird-x__look", { word: "pie" })).toEqual({
 		result: "Found it.",
 	});
-	expect(seen).toEqual([{ word: "pie" }]);
+	// A field set to null is a field left out, as a caller that sends every field means it.
+	await dispatch(operations, handlers, "mcp__piebird-x__look", { word: "tart", style: null });
+	expect(seen).toEqual([{ word: "pie" }, { word: "tart" }]);
 	expect(await dispatch(operations, handlers, "mcp__piebird-x__note_down", {})).toEqual({ deny: "It is gone." });
 });
 

@@ -79,7 +79,10 @@ async function echo(input: unknown): Promise<Outcome> {
 	if (typeof input !== "object" || input === null || !("text" in input) || typeof input.text !== "string") {
 		throw new TypeError("echo takes text");
 	}
-	const echoed = "upper" in input && input.upper === true ? input.text.toUpperCase() : input.text;
+	// As the plugins' handlers do, a field that is there but of the wrong kind is refused.
+	const upper = "upper" in input ? input.upper : false;
+	if (typeof upper !== "boolean") throw new TypeError("upper takes true or false");
+	const echoed = upper ? input.text.toUpperCase() : input.text;
 	return { ok: true, text: catalog.text("echoed", { echoed }), data: { echoed } };
 }
 

@@ -128,6 +128,14 @@ describe("runProgram", () => {
 		expect(ran.stdout).toBe("");
 	});
 
+	test("call takes a field set to null as left out", async () => {
+		expect(await run(fixture("call", "echo"), '{"text":"hi","upper":null}')).toEqual({
+			exitCode: 0,
+			stdout: '{"output":{"echoed":"hi"}}\n',
+			stderr: "",
+		});
+	});
+
 	test("call runs in the folder it was started in, the program's project", async () => {
 		const ran = await run(fixture("call", "place"), "{}");
 		expect(JSON.parse(ran.stdout)).toEqual({

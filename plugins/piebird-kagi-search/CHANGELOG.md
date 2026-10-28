@@ -76,6 +76,13 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- GPT models in omp can search with Kagi: omp gets the tools with `strict: false`, so a GPT model
+  sends only the arguments it uses. Before, it filled every one, `time` together with
+  `from_date` and `to_date`, and every `kagi_search` and `kagi_batch_search` was refused.
+- An argument set to null counts as left out, as callers that send every argument mean it:
+  `format: null` was refused.
+- `time` given with dates is refused with how to fix it: leave `time` out to search between the
+  dates, or the dates out to search the last period.
 - The sign-in page ends as soon as you're done; it could keep the vault waiting 5 more seconds
   when the browser had opened a connection ahead of time.
 - When Kagi refuses the session in `KAGI_SESSION_TOKEN`, a search no longer opens the sign-in

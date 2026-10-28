@@ -30,6 +30,9 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Bold around inline code stays bold, in a table and out: a reply's bold `after-kagi`, such as
+  the default marked among choices, showed as plain code, since Tern gives code a weight of its
+  own. Plain bold in table cells was bold already. Version 0.1.4, so omp replaces 0.1.3 in Tern.
 - On Tern's phone apps, Send shows an up arrow instead of a hatched box. Its key cap is the
   character ⏎, which the apps' built-in font lacks on Android; the arrow is drawn in CSS, in the
   button's own colour. Version 0.1.2, so omp replaces 0.1.1 in Tern.

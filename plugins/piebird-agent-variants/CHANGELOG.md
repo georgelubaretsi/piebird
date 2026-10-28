@@ -46,3 +46,8 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   as a subscription, the way omp's status line counts it, so its models are used without a
   question; before, every route with a price needed your approval unless you said
   "subscription". A provider signed in with an API key and a price still needs your approval.
+
+### Fixed
+
+- omp gets `agent_variant_setup` with `strict: false`, so a GPT model sends only the arguments it
+  uses rather than a value for each; an argument set to null counts as left out.

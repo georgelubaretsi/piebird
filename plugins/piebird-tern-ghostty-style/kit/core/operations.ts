@@ -59,6 +59,17 @@ export type Handler = (input: unknown, signal?: CallSignal) => Promise<Outcome>;
 export type Handlers = Readonly<Record<string, Handler>>;
 
 /**
+ * The arguments of a call with each field set to null left out: a caller that sends every field
+ * (OpenAI's strict mode) sets the ones it doesn't use to null, and an operation takes a field
+ * that is there as given. Every shell passes a call's arguments through this before checking
+ * them or calling the handler, so an operation can't take null as a value.
+ */
+export function withoutNulls(input: unknown): unknown {
+	if (!isFields(input)) return input;
+	return Object.fromEntries(Object.entries(input).filter(([, value]) => value !== null));
+}
+
+/**
  * What the model reads when a tool can't answer as its operation says, from the plugin's catalog:
  * `crashed`, error-crashed, when its code fails instead (a bug, an unexpected error), with the
  * failure's own message; `badArguments`, error-arguments, when the arguments don't fit the tool's

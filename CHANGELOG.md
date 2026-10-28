@@ -283,6 +283,14 @@ change in a new month moves them into a section for the month they were last cha
 
 ### Fixed
 
+- The kit registers each omp tool with `strict: false` (`kit/omp/tools.ts`). Without the flag omp
+  sends OpenAI the tool with no strict flag and its optional arguments not nullable, and GPT
+  models filled every argument with a made-up value, which tools with exclusive arguments
+  refused: every `kagi_search` and `session_read` from GPT-6.1 Sol failed. Measured with real
+  calls: 6 of 6 failed without the flag, 6 of 6 worked with it.
+- Every shell (omp, Claude Code, MCP, `call`) leaves out the arguments set to null before it
+  checks a call or runs the handler (`withoutNulls` in `kit/core/operations.ts`), so a caller
+  that sends every argument, null for those it doesn't use, gets what leaving them out gets.
 - macOS builds of the Bun programs signed with the Developer ID now carry the `allow-jit`
   entitlement (`tools/bun.entitlements`). Under the hardened runtime without it, Bun's
   JavaScript engine can't compile and a program ran about 8 times slower (measured: 8.1 s

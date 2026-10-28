@@ -7,6 +7,7 @@ import type { HookAnswer, HookInput } from "./hook";
 import type { McpOptions } from "./mcp";
 import { readHookInput } from "./hook";
 import { serveMcp } from "./mcp";
+import { withoutNulls } from "../core/operations";
 import { runSettingsPage } from "./settings";
 
 export interface Parts extends McpOptions {
@@ -65,7 +66,7 @@ async function call(parts: Parts, operation: string): Promise<void> {
 		throw new UsageError(`no operation ${operation}; the operations: ${known}`);
 	}
 	const input: unknown = JSON.parse(await Bun.stdin.text());
-	const outcome = await handler(input);
+	const outcome = await handler(withoutNulls(input));
 	const reply = outcome.ok ? { output: outcome.data } : { error: { id: outcome.error, text: outcome.text.text } };
 	process.stdout.write(`${JSON.stringify(reply)}\n`);
 }

@@ -96,6 +96,7 @@ describe("registerOperations", () => {
 			},
 			loadMode: "essential",
 			approval: "read",
+			strict: false,
 			execute: undefined,
 		});
 		const fetch = tool(tools, "fetch_page");
@@ -115,6 +116,19 @@ describe("registerOperations", () => {
 		const result = await call(tool(tools, "web_search_kagi"), { query: "bun" });
 		expect(seen).toEqual([{ query: "bun" }]);
 		expect(result).toEqual({ content: [{ type: "text", text: "Found it." }], details: { hits: 3 } });
+	});
+
+	test("a field set to null reaches the handler as left out, as a caller that sends every field means it", async () => {
+		const seen: unknown[] = [];
+		const tools = registered({
+			...idle,
+			search: async input => {
+				seen.push(input);
+				return { ok: true, text: text("found"), data: null };
+			},
+		});
+		await call(tool(tools, "web_search_kagi"), { query: "bun", limit: null });
+		expect(seen).toEqual([{ query: "bun" }]);
 	});
 
 	test("a tool that runs the model's code is approved as code execution", () => {

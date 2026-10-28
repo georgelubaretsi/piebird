@@ -113,6 +113,11 @@ describe("serveMcp, 2025 era (initialize)", () => {
 		expect(answers.get(2)?.result).toEqual({ content: [{ type: "text", text: "HELLO" }] });
 	});
 
+	test("takes a field set to null as left out: the call passes the check and the handler never sees it", async () => {
+		const answers = await exchange([INITIALIZE, INITIALIZED, call(2, "echo", { text: "hello", upper: null })]);
+		expect(answers.get(2)?.result).toEqual({ content: [{ type: "text", text: "hello" }] });
+	});
+
 	test("answers a declared error as a tool error with its text", async () => {
 		const answers = await exchange([INITIALIZE, INITIALIZED, call(2, "refuse", {})]);
 		expect(answers.get(2)?.result).toEqual({

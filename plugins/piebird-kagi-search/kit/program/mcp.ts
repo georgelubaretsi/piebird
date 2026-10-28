@@ -14,7 +14,7 @@ import type { Readable, Writable } from "node:stream";
 import type { ModelText } from "../core/model";
 import type { Handlers, JsonSchema, Operations, Outcome, ToolHints } from "../core/operations";
 import { fromJsonSchema, McpServer } from "@modelcontextprotocol/server";
-import { crashText } from "../core/operations";
+import { crashText, withoutNulls } from "../core/operations";
 import { serveStdio, StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 
 /** One finished tool call (not one the client cancelled): the operation, its outcome, and the `_meta` the client sent with it. */
@@ -134,11 +134,12 @@ export function mcpServer(options: McpOptions): McpServer {
 				...(tool.hints.alwaysLoad === true ? { _meta: { [ALWAYS_LOAD]: true } } : {}),
 			},
 			async (input, ctx): Promise<CallToolResult> => {
-				const problem = await problemWith(input);
+				const args = withoutNulls(input);
+				const problem = await problemWith(args);
 				if (problem !== undefined)
 					return { content: [{ type: "text", text: operations.badArguments(problem).text }], isError: true };
 				// oxlint-disable-next-line eslint/no-underscore-dangle -- MCP names a request's metadata _meta
-				return perform(options, op.id, input, { meta: ctx.mcpReq._meta, signal: ctx.mcpReq.signal });
+				return perform(options, op.id, args, { meta: ctx.mcpReq._meta, signal: ctx.mcpReq.signal });
 			},
 		);
 	}

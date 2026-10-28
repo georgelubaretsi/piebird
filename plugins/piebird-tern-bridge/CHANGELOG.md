@@ -58,6 +58,8 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- omp gets `tern_lua` with `strict: false`, so a GPT model sends only the arguments it uses
+  rather than a value for each; `timeout_s: null` counts as left out.
 - The Tern part's wake reader (a `cat` on the window's wake pipe) no longer outlives its window:
   it stops within 5 seconds after Tern quits or crashes, and a plugin reload ends the old
   window's reader at once. Before, every quit and every reload (each upgrade reloads Tern's

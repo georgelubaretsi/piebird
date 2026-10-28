@@ -2,7 +2,7 @@
 // handler for it. The build copies kit/ into each plugin that needs it (plugins/<name>/kit/); edit
 // it in kit/.
 import type { Handlers, Operations, Outcome, Tool } from "../core/operations";
-import { crashText } from "../core/operations";
+import { crashText, withoutNulls } from "../core/operations";
 
 export interface ToolResult {
 	content: { type: "text"; text: string }[];
@@ -20,6 +20,12 @@ export interface OmpTool<C> {
 	loadMode: "essential" | "discoverable";
 	/** omp's approval tier: a read-only tool reads, one that runs the model's code executes, any other changes something. */
 	approval: "read" | "write" | "exec";
+	/**
+	 * Always false: without it, omp sends OpenAI the tool with no strict flag and the optional
+	 * fields not nullable, and GPT models fill every field with a made-up value (time and dates,
+	 * find and before), which the operations refuse. With false they send only what they use.
+	 */
+	strict: false;
 	/** `ctx` is omp's ExtensionContext of the session that calls the tool. */
 	execute(
 		toolCallId: string,
@@ -69,13 +75,14 @@ function definition<C>(
 		parameters: tool.inputSchema,
 		loadMode: tool.hints.alwaysLoad === true ? "essential" : "discoverable",
 		approval: approvalOf(tool.hints),
+		strict: false,
 		// oxlint-disable-next-line eslint/max-params -- omp's execute signature: the context comes fifth
 		async execute(_toolCallId, params, signal, _onUpdate, ctx) {
 			try {
 				const handlers = handlersFor(ctx);
 				if (!Object.hasOwn(handlers, id)) throw new Error(`no handler for operation ${id} (tool ${tool.name})`);
 				// The call's signal aborts when the person cancels it.
-				return resultOf(await handlers[id](params, signal));
+				return resultOf(await handlers[id](withoutNulls(params), signal));
 			} catch (error) {
 				return { content: [{ type: "text", text: crashText(operations, error).text }], isError: true };
 			}

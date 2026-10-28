@@ -452,7 +452,7 @@ The agent calls `session_read` with `{"session":"01a2b3c4-5d6e","find":"cache","
 ### A tool error in omp, Claude Code and Codex / desktop apps
 
 ```text
-find searches from line (or the start); it takes no before or after
+find searches from line (or the start); it takes no before or after: leave them out to search, or leave find out to read a page around the line
 ```
 
 From [`error-find-with-page`](../../plugins/piebird-sessions/core/model.ftl#L146).

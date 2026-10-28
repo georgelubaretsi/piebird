@@ -4,7 +4,7 @@
 // file, so the hooks module makes every call and hands values in and out (kit/claude/io-of.md).
 // The build copies kit/ into each plugin that needs it (plugins/<name>/kit/); edit it in kit/.
 import type { Handlers, Operations, Outcome } from "../core/operations";
-import { crashText } from "../core/operations";
+import { crashText, withoutNulls } from "../core/operations";
 
 /** What `$.tool.register` takes (Claude Code's `ToolSpec`). */
 export interface ToolSpec {
@@ -80,7 +80,7 @@ export async function dispatch(
 	if (op === undefined) return undefined;
 	try {
 		if (!Object.hasOwn(handlers, op.id)) throw new Error(`no handler for operation ${op.id}`);
-		return callResult(await handlers[op.id](input));
+		return callResult(await handlers[op.id](withoutNulls(input)));
 	} catch (error) {
 		return { deny: crashText(operations, error).text };
 	}
