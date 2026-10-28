@@ -17,7 +17,7 @@
     "check": "bun tools/build.ts --check && bun tools/model-page.ts --check && bun run lint && bun run fmt:check && bun run typecheck && bun run test"
   },
   "dependencies": {
-    "@modelcontextprotocol/server": "2.2.0"
+    "@modelcontextprotocol/server": "2.3.0"
   },
   "devDependencies": {
     "@fluent/bundle": "0.19.1",
@@ -35,7 +35,8 @@
   },
   "overrides": {
     "adm-zip": "0.6.1",
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "zod": "4.6.6"
   },
   "trustedDependencies": []
 }

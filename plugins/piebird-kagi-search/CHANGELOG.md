@@ -98,3 +98,9 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   web_search out in front in the next. web_search you turned off yourself stays off.
 - In Claude Code, `/clear`, `/resume` and `/branch` start the next conversation over: it no longer
   inherits the last one's Kagi failure or the setting read in another project.
+
+### Security
+
+- The vault is built with Go 1.27.3 and `golang.org/x/net` 0.62.0: its TLS connections to Kagi
+  distrust the compromised intermediate certificates (GO-2026-6809), and a crafted result page
+  can't slow parsing down quadratically (GO-2026-6860).

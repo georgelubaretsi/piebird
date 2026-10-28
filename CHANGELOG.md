@@ -310,3 +310,14 @@ change in a new month moves them into a section for the month they were last cha
   ran too and failed.
 - `golangci-lint fmt` leaves `reference/` alone (`.golangci.yml`). It walks every Go file under
   the module, so the lint failed on upstream code cloned there, such as the Tern SDK's examples.
+
+### Security
+
+- Dependencies with known vulnerabilities fixed: `@modelcontextprotocol/server` 2.3.0 (three
+  advisories in its HTTP transport and bearer auth; the programs serve MCP over stdio), and
+  `fast-uri` 3.1.9 and `zod` 4.6.6 (memory exhaustion validating oversized collections).
+- `zod` is overridden to 4.6.6 for every package: omp's `puppeteer-core` (a dev dependency here,
+  for omp's types) brings `chromium-bidi` 16, which asks for zod 3, and no zod 3 release is fixed.
+- The vaults build with Go 1.27.3 (`crypto/x509` distrusts compromised intermediate
+  certificates, GO-2026-6809) and `golang.org/x/net` 0.62.0 (`html.Parse` without quadratic
+  slowdowns on text nodes, GO-2026-6860).
