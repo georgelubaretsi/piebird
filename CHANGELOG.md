@@ -245,6 +245,7 @@ change in a new month moves them into a section for the month they were last cha
 
 ### Changed
 
+- The model page of piebird-workflow-rules (`docs/model/`) shows its new rule `interfaces`.
 - AGENTS.md: commits and pull request titles follow Conventional Commits, scoped by plugin or
   folder (`fix(piebird-sessions): …`), and branches start with `feat/`, `fix/`, `hotfix/` or
   `chore/`.

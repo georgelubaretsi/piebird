@@ -44,6 +44,14 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 - Rule `commits-and-branches`: commit messages in Conventional Commits 1.0.0 and branch names
   starting with `feat/`, `fix/`, `hotfix/` or `chore/`, unless the project names them its own
   way. Names only: when and how to branch, merge and release stays the project's.
+- Rule `interfaces`: each operation declared once, with its input and output as JSON Schema
+  checked on every call and whether it is read-only, destructive, idempotent or open-world, its
+  logic in a pure core; every operation reachable headless, with UI, CLI, RPC and MCP as thin
+  adapters over it. CLIs follow clig.dev, take secrets on stdin and keep them in the system's
+  credential store, and add a JSON contract (`--json`, `--input`, exit codes, errors, paging) and
+  `--help --json`, which prints the operations as MCP tool definitions. A program with live
+  state or long operations also runs as one process in two modes, `rpc` (JSON-RPC 2.0) for
+  scripts and `mcp` for agents, with MCP's progress and cancellation in both.
 - Skill `failure-classes`: ten general failure classes, each with its members and how to test them.
 - README, with a demo video: omp fixes a reported bug and the other place with the same flaw,
   with tests.
