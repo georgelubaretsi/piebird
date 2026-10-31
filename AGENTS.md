@@ -78,6 +78,8 @@ Run in the dev shell (`nix develop`):
 ## Workflow
 
 - Run `bun run check` before committing.
+- Conventional Commits for commits and pull request titles, scoped by plugin or folder
+  (`fix(piebird-sessions): …`); branches `feat/`, `fix/`, `hotfix/` or `chore/<slug>`.
 - A commit changing a plugin adds an entry under its `## [Unreleased]`, and one changing
   anything else here an entry in `CHANGELOG.md`; or its message ends with the trailer
   `Changelog: none`. `CHANGELOG.md` is never released: the first change in a new month first

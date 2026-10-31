@@ -2,7 +2,7 @@
 
 Rules and a skill on how to work, for any project: weigh problems in proportion, think before
 building, fix a correction as a class of mistakes, use the project's own tools, keep the
-changelog, and ask only for real decisions.
+changelog, name commits and branches, and ask only for real decisions.
 
 [![omp, Claude Code and Codex fix the same reported bug under the same rules](../../demos/piebird-workflow-rules/demo.webp)](../../demos/piebird-workflow-rules/demo.mp4)
 
@@ -23,7 +23,7 @@ Claude on a Mac or a Windows PC: the piebird installer ([Install](../../README.m
 | `piebird-workflow-rules` | think before building, proportion, recurring corrections | in full, every agent |
 | `piebird-workflow-rules-main` | asking for decisions | in full, the main agent |
 | `piebird-workflow-rules-reviewer` | what a reviewer reports | in full, the `reviewer` agent |
-| `project-tooling`, `changelog` | the project's own tools; changelogs | listed; the agent reads one when it applies |
+| `project-tooling`, `changelog`, `commits-and-branches` | the project's own tools; changelogs; commit and branch names | listed; the agent reads one when it applies |
 
 Claude Code doesn't load rules from a plugin, so the plugin's mod puts them in a block of the
 conversation's context: the always-applied ones for the main agent in full, the others by name

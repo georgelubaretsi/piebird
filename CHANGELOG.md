@@ -245,6 +245,9 @@ change in a new month moves them into a section for the month they were last cha
 
 ### Changed
 
+- AGENTS.md: commits and pull request titles follow Conventional Commits, scoped by plugin or
+  folder (`fix(piebird-sessions): …`), and branches start with `feat/`, `fix/`, `hotfix/` or
+  `chore/`.
 - oxlint no longer limits file and function length (`max-lines`, `max-lines-per-function`):
   AGENTS.md makes length a guideline, split at a seam rather than to get under a number. The
   complexity, depth, parameter and callback limits stay.

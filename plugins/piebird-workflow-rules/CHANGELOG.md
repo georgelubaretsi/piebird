@@ -35,9 +35,15 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 - Rule `project-tooling`: use the project's own dev shell, scripts, lockfiles and CI steps; write
   AGENTS.md as a README for agents (fixed sections, short bullets, detail in `docs/`, 2–5 code
   review rules each with a safe path, the threat model in `docs/threat-model.md`).
-- Rule `changelog`: keep a CHANGELOG.md in Keep a Changelog format, updated in the same change;
-  a project that never releases closes its Unreleased section into a dated monthly section at
-  the first change of a new month.
+- Rule `changelog`: every project keeps a CHANGELOG.md, and every change users would notice adds
+  an entry in the same change. Where a tool writes the changelog (release-please,
+  semantic-release, changesets, towncrier), the entry is that tool's input and its output is
+  never edited. The format is the project's own, otherwise Keep a Changelog; a project that
+  never releases closes its Unreleased section into a dated monthly section at the first change
+  of a new month.
+- Rule `commits-and-branches`: commit messages in Conventional Commits 1.0.0 and branch names
+  starting with `feat/`, `fix/`, `hotfix/` or `chore/`, unless the project names them its own
+  way. Names only: when and how to branch, merge and release stays the project's.
 - Skill `failure-classes`: ten general failure classes, each with its members and how to test them.
 - README, with a demo video: omp fixes a reported bug and the other place with the same flaw,
   with tests.

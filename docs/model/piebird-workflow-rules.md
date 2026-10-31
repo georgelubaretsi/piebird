@@ -88,7 +88,8 @@ agent asks the user before continuing; a subagent stops and reports it to the ag
 started it.
 
 Read one of these rules when its description fits your work:
-- changelog: Every project keeps a CHANGELOG.md (Keep a Changelog 2.0.0); every change users would notice adds an entry in the same change (/home/user/plugins/piebird-workflow-rules/rules/changelog.md)
+- changelog: Every project keeps a CHANGELOG.md; every change users would notice adds an entry in the same change (/home/user/plugins/piebird-workflow-rules/rules/changelog.md)
+- commits-and-branches: Name commits per Conventional Commits 1.0.0 and branches feat/, fix/, hotfix/ or chore/<slug>, unless the project names them its own way (/home/user/plugins/piebird-workflow-rules/rules/commits-and-branches.md)
 - project-tooling: Use the project's own tools and commands (dev shell, scripts, lockfiles, task runner, CI steps) instead of globally installed tools or ad-hoc commands; how to write AGENTS.md (/home/user/plugins/piebird-workflow-rules/rules/project-tooling.md)
 ```
 
@@ -321,43 +322,32 @@ and a secret scanner.
 
 ### Rule `changelog`
 
-In omp's rules list (`changelog`: Every project keeps a CHANGELOG.md (Keep a Changelog 2.0.0); every change users would notice adds an entry in the same change); `rule://changelog` reads its body:
+In omp's rules list (`changelog`: Every project keeps a CHANGELOG.md; every change users would notice adds an entry in the same change); `rule://changelog` reads its body:
 
 ````text
 # Changelog
 
-Required in every project (the owner's decision; a project's own policy doesn't remove it):
+Required in every project, whatever its own policy says:
 
-- A CHANGELOG.md per independently versioned thing, at its root; one at the repo root when
-  the repo is released as a whole. A project that never releases still keeps one.
-- Keep a Changelog 2.0.0 format: entries under `## [Unreleased]`, in Added, Changed,
-  Deprecated, Removed, Fixed or Security, written for the people using it (what changed for
-  them, not which files moved). Breaking changes start with **Breaking:**.
-- A project that never releases closes its Unreleased section into a dated monthly section,
-  `[YYYY.MM] - YYYY-MM-DD` (the month's last day), at the first change of a new month.
-- The entry lands in the same change. Counts: behavior, interfaces, configuration, install
-  steps, security fixes; refactors, tests and CI only when users would notice. A change with
-  nothing notable says so explicitly (default marker: a `Changelog: none` line in the commit
-  message).
-- No CHANGELOG.md yet (see whether the root lists one before reading it): create it the first
-  time something notable changes, with the header below. Don't backfill old history.
-- If the project checks its changelog, run that check (rule: project-tooling).
+- One per independently versioned thing, at its root; also where nothing is ever released.
+- A change users would notice (behavior, interfaces, configuration, install steps, security)
+  adds an entry in the same change, written for them; any other change says so, by default
+  with a `Changelog: none` line in the commit message.
+- A tool writes it (release-please, semantic-release, changesets, towncrier, …): the entry is
+  the tool's input (a commit message written for users, or a fragment); never edit its output.
+- None yet: create it at the first notable change; don't backfill.
+- Run the project's changelog check, if it has one.
 
-Defaults (where the project already has a convention, follow it):
+Format: the project's own where it has one, otherwise Keep a Changelog 2.0.0:
 
-- Version format and scheme: release headings are `[<version>] - YYYY-MM-DD` with the
-  version written the project's way. The header's versioning sentence names the scheme the
-  project follows (Semantic Versioning, CalVer, …); leave it out when it follows none or
-  never releases.
-- Releasing: in the same commit as the version bump, rename `[Unreleased]` to the release
-  heading and start a new empty `[Unreleased]`.
-- Compare links: once releases are tagged on a host with a compare view, end the file with
-  `[Unreleased]: <repo>/compare/<latest tag>...HEAD` and one
-  `[<version>]: <repo>/compare/<previous tag>...<tag>` per release (the first links to its
-  tag); a release adds its link and moves the Unreleased base. Tag names come from the
-  project's existing tags or release docs; with none yet, `v<version>`, or
-  `<name>-v<version>` in a repo with several versioned things.
-- The marker for "nothing notable" (a commit trailer, a PR label, …).
+- Entries under `## [Unreleased]`, in Added, Changed, Deprecated, Removed, Fixed or Security;
+  a breaking one starts with **Breaking:**.
+- Releasing renames `[Unreleased]` to `[<version>] - YYYY-MM-DD` in the version-bump commit
+  and opens a new one. Never released: the first change of a month first closes it into the
+  previous month's `[YYYY.MM] - YYYY-MM-DD`, dated that month's last day.
+- Tagged releases on a host with compare views: end with `[Unreleased]: <repo>/compare/<tag>...HEAD`
+  and a link per release; tags as the project names them, else `v<version>`.
+- New file (its versioning line names the project's scheme, or goes):
 
 ```markdown
 # Changelog
@@ -370,6 +360,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ```
 ````
+
+### Rule `commits-and-branches`
+
+In omp's rules list (`commits-and-branches`: Name commits per Conventional Commits 1.0.0 and branches feat/, fix/, hotfix/ or chore/<slug>, unless the project names them its own way); `rule://commits-and-branches` reads its body:
+
+```text
+# Commits and branches
+
+Names only; when and how to branch, merge and release is the project's. Its own naming
+(AGENTS.md, CONTRIBUTING, a commit check, recent `git log`) wins over this.
+
+- Commits: Conventional Commits 1.0.0; footers are git trailers, `Changelog: none` among them
+  (rule: changelog).
+- Branches: `<prefix>/<slug>`, the slug in lowercase kebab-case: `feat/` a new feature, `fix/` a
+  bug fix, `hotfix/` an urgent fix to something released or live, `chore/` anything else.
+```
 
 ### Rule `piebird-workflow-rules-main`
 
