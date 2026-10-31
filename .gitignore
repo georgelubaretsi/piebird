@@ -3,6 +3,13 @@ node_modules/
 result
 .DS_Store
 
+# Python (pyproject.toml): uv's environment and the tools' caches
+/.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
 # Native programs, built by tools/native.ts (docs/manifests.md, "Native programs")
 /plugins/*/native/
 

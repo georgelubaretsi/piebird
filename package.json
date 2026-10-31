@@ -8,12 +8,12 @@
   ],
   "scripts": {
     "build": "bun tools/build.ts && bun tools/native.ts && bun tools/model-page.ts",
-    "lint": "oxlint && golangci-lint run ./...",
-    "fmt": "oxfmt '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,css}' && golangci-lint fmt ./...",
-    "fmt:check": "oxfmt --check '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,css}' && golangci-lint fmt --diff ./...",
-    "typecheck": "tsc -p . && bun run --filter './plugins/*' typecheck",
-    "test": "bun test ./tools ./kit ./installer && bun run --filter './plugins/*' test && go test -race ./...",
-    "audit": "bun audit --ignore GHSA-hp3w-g68c-fv3c && go tool govulncheck ./...",
+    "lint": "oxlint && golangci-lint run ./... && uv run --locked ruff check",
+    "fmt": "oxfmt '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,css}' && golangci-lint fmt ./... && uv run --locked ruff format",
+    "fmt:check": "oxfmt --check '**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,css}' && golangci-lint fmt --diff ./... && uv run --locked ruff format --check",
+    "typecheck": "tsc -p . && bun run --filter './plugins/*' typecheck && uv run --locked mypy",
+    "test": "bun test ./tools ./kit ./installer && bun run --filter './plugins/*' test && go test -race ./... && uv run --locked pytest",
+    "audit": "bun audit --ignore GHSA-hp3w-g68c-fv3c && go tool govulncheck ./... && uv audit --locked --preview-features audit-command",
     "check": "bun tools/build.ts --check && bun tools/model-page.ts --check && bun run lint && bun run fmt:check && bun run typecheck && bun run test"
   },
   "dependencies": {

@@ -67,6 +67,10 @@
               # tesseract reads a video made on this Mac for the login name (tools/demo/onscreen.ts).
               pkgs.ffmpeg-headless
               pkgs.tesseract
+              # Python for analysis (tools/bench/): uv installs and locks its packages
+              # (pyproject.toml, uv.lock) on this Python, never one it downloads.
+              pkgs.python3
+              pkgs.uv
             ]
             # Demos recorded in a macOS virtual machine (docs/demos.md): Packer builds its image
             # with its tart plugin, tart runs it.
@@ -74,6 +78,8 @@
               pkgs.packer
               pkgs.tart
             ];
+            UV_PYTHON = "${pkgs.python3}/bin/python3";
+            UV_PYTHON_DOWNLOADS = "never";
           };
         }
       );

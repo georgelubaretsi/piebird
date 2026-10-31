@@ -12,6 +12,20 @@ change in a new month moves them into a section for the month they were last cha
 
 ### Added
 
+- The bench (`tools/bench/`, `docs/bench.md`): runs omp headless on a suite's task prompts in
+  throwaway sandboxes, for one or more versions of a plugin's files, and scores each run with
+  checks that give the same answer every time: the agent's journal, and probes that run the
+  program it built through its CLI, JSON-RPC and MCP. It writes `results.json` and `report.md`,
+  with an earlier result as the baseline when given. The first suite, `interfaces`, measures
+  piebird-workflow-rules' rule of that name.
+- Python for analysis work: `pyproject.toml` and `uv.lock` (uv, exact pins, the same 14-day wait
+  as Bun, wheels only). `bun run lint`, `fmt`, `fmt:check`, `typecheck`, `test` and `audit` cover
+  it with ruff, mypy (strict), pytest and `uv audit` (`docs/dependencies.md`).
+
+## [2026.10] - 2026-10-31
+
+### Added
+
 - Rules are written for what they cost (AGENTS.md, Conventions): text goes in always only when the
   agent can't tell by itself when to look it up, missing it goes unnoticed, and it is short. The
   build refuses an always-applied rule not named for whom it is (`rules/<plugin>.md` for every

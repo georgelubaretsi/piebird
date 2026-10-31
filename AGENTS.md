@@ -47,7 +47,8 @@ for any user, with no project, client, host or person names and no personal path
   `native/`), the changelog checks, the reference sync, and `model-page.ts`, which writes
   `docs/model/`: what the model sees from each plugin, from its scripted session
   (`plugins/<name>/test/scenario.ts`) in each harness, run through its real shells
-  (`tools/model-page/`).
+  (`tools/model-page/`), and `bench/`, which measures whether a model follows a plugin's rule:
+  a TypeScript runner and Python analysis ([Bench](docs/bench.md)).
 - `kit/`: code plugins share, with its tests, by shell: `core/` (pure), `bun/`, `omp/`, `claude/`,
   `program/` ([The kit](docs/kit.md)). A plugin can't import from outside its folder, so the build
   copies each part into `plugins/<name>/kit/` of the plugins with that shell (`src/`,
@@ -67,12 +68,13 @@ for any user, with no project, client, host or person names and no personal path
 
 Run in the dev shell (`nix develop`):
 
-    bun run check         # generated files, lint, fmt:check, typecheck, tests (TypeScript and Go)
+    bun run check         # generated files, lint, fmt:check, typecheck, tests (TypeScript, Python, Go)
     bun run build         # regenerate manifests, the native programs (native/) and docs/model/
-    bun run lint          # oxlint and golangci-lint; Luau: `selene plugins`, `stylua --check plugins`
-    bun run fmt           # oxfmt and Go's formatters; `bun run fmt:check` only checks
+    bun run lint          # oxlint, golangci-lint and ruff; Luau: `selene plugins`, `stylua --check plugins`
+    bun run fmt           # oxfmt, Go's formatters and ruff format; `bun run fmt:check` only checks
     bun tools/sync-references.ts [tern | omp | agent-plugins | claude-code | codex | mcp ...]   # refresh reference/
     bun tools/demo/vm/run.ts <demo>... [--no-video]   # record demos in the demo machine (docs/demos.md)
+    bun tools/bench/run.ts <suite> [--repeats n]     # manual: does a model follow a rule (docs/bench.md)
     bun tools/installer.ts [--platform macos-arm64 | macos-x64 | windows-x64]   # the desktop installer, into dist/installer/
 
 ## Workflow
@@ -188,4 +190,4 @@ Run in the dev shell (`nix develop`):
 ## More detail
 
 - [Manifests and the build](docs/manifests.md) · [Reference material](docs/reference.md) ·
-  [Security](docs/security.md)
+  [Security](docs/security.md) · [Bench](docs/bench.md)

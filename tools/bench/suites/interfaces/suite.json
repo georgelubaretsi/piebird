@@ -1,0 +1,46 @@
+{
+	"$schema": "../../suite.schema.json",
+	"description": "Does the agent read the interfaces rule before building a program, and does what it builds keep the rule's contract: CLI, JSON-RPC and MCP modes, sessions, progress and cancellation? The bug fix is the control: the rule doesn't apply there.",
+	"plugin": "piebird-workflow-rules",
+	"project": { "module": "demos/shop-api.ts", "export": "shopApi", "name": "shop-api", "commit": "Cart and shipping" },
+	"agent": "omp",
+	"model": "anthropic/claude-sonnet-5-5",
+	"thinking": "medium",
+	"repeats": 3,
+	"concurrency": 12,
+	"timeoutMinutes": 25,
+	"guide": "rules/interfaces.md",
+	"variants": { "shipped": {} },
+	"tasks": {
+		"oneshot": {
+			"prompt": "Add a command-line tool for the cart, so totals and shipping can be worked out from the terminal. Build it end to end.",
+			"checks": ["read-before-edit", "named", "help", "version", "help-json", "bad-flag", "cli-input"]
+		},
+		"session": {
+			"prompt": "Support staff build up a cart during a phone call (adding and removing lines, applying a gift card and coupon) and want the running total after each step. Add a command-line tool for that.",
+			"checks": ["read-before-edit", "named", "help", "version", "help-json", "bad-flag", "rpc", "mcp", "session"]
+		},
+		"slow": {
+			"prompt": "Add a command-line tool that re-prices a cart export: a JSON-lines file with one cart per line (its lines, gift card, shipping base and coupon). It writes each cart's new total and shipping to an output file. Exports can hold millions of carts, so a run can take minutes.",
+			"checks": [
+				"read-before-edit",
+				"named",
+				"help",
+				"version",
+				"help-json",
+				"bad-flag",
+				"rpc",
+				"mcp",
+				"finishes",
+				"progress-rpc",
+				"progress-mcp",
+				"cancel-rpc",
+				"cancel-mcp"
+			]
+		},
+		"bugfix": {
+			"prompt": "A gift card bigger than the cart makes the total negative. Fix it.",
+			"checks": ["no-read"]
+		}
+	}
+}

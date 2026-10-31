@@ -1,0 +1,100 @@
+# Python for the plugins' analysis tooling (tools/bench/), run with uv in the dev shell, on the
+# dev shell's Python (flake.nix sets UV_PYTHON). Not a package: nothing here is installed or
+# published.
+[project]
+name = "piebird-plugins-tools"
+version = "0"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "jsonschema==4.26.0",
+    "mypy==2.4.0",
+    "pytest==9.1.1",
+    "ruff==0.17.1",
+    "types-jsonschema==4.26.0.20261006",
+]
+
+[tool.uv]
+package = false
+# The same waiting period as Bun's minimumReleaseAge (docs/dependencies.md).
+exclude-newer = "14 days"
+# Wheels only: no package's build code runs here; one with no wheel for this Python fails the
+# install instead of being built from source (docs/dependencies.md).
+no-build = true
+
+[tool.pytest.ini_options]
+testpaths = ["tools/bench"]
+pythonpath = ["tools/bench"]
+python_files = ["*_test.py"]
+
+# Lint and format (docs/lint.md). The limits match the TypeScript and Go ones (.oxlintrc.json,
+# .golangci.yml): complexity 12, nesting depth 4, 4 parameters.
+[tool.ruff]
+target-version = "py314"
+# oxfmt's printWidth (.oxfmtrc.json).
+line-length = 120
+# Python and this file; not ruff's default Markdown (code blocks in docs are prose, which no
+# formatter here rewrites) or notebooks (none).
+include = ["*.py", "*.pyi", "**/pyproject.toml"]
+# What oxfmt leaves alone: upstream copies and vendored code.
+extend-exclude = ["reference", "kit/*/vendor", "plugins/*/kit/*/vendor", "plugins/*/vendor"]
+
+[tool.ruff.lint]
+select = [
+    "B",   # flake8-bugbear: likely bugs
+    "C4",  # comprehensions
+    "C90", # mccabe: complexity
+    "E",   # pycodestyle errors
+    "F",   # Pyflakes
+    "I",   # import order
+    "N",   # PEP 8 names
+    "PERF",
+    "PGH", # pygrep-hooks: a noqa or type: ignore with no code
+    "PL",  # Pylint: parameters, nesting
+    "PT",  # pytest style
+    "PTH", # pathlib over os.path
+    "RET",
+    "RUF", # unused noqa among them
+    "SIM",
+    "UP",  # syntax of the target version
+    "W",   # pycodestyle warnings
+    # Nesting depth: a preview rule, the only one ruff has; explicit-preview-rules keeps every
+    # other preview rule off, and the exact ruff pin keeps its behavior until an upgrade.
+    "PLR1702",
+]
+ignore = [
+    # The formatter owns line length, as oxfmt does for TypeScript.
+    "E501",
+    # Complexity is C901's limit, as in TypeScript and Go; these would be other, different ones.
+    "PLR0911",
+    "PLR0912",
+    "PLR0915",
+    # Comparing with a literal is often the clearest test.
+    "PLR2004",
+]
+preview = true
+explicit-preview-rules = true
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.pylint]
+max-args = 4
+max-positional-args = 4
+max-nested-blocks = 4
+
+[tool.ruff.format]
+line-ending = "lf"
+docstring-code-format = true
+
+# Type checking: the bench's analysis (the `analysis` package and the suites' checks.py, which
+# import it), as modules under tools/bench/.
+[tool.mypy]
+strict = true
+files = ["tools/bench"]
+mypy_path = "tools/bench"
+explicit_package_bases = true
+# Every `# type: ignore` names its error codes (tools/lib/directives.ts asks for a reason too).
+enable_error_code = ["ignore-without-code"]

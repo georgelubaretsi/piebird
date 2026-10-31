@@ -1,0 +1,97 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "A bench suite: plugins/tools/bench/suites/<suite>/suite.json",
+	"description": "What the bench runs (plugins/docs/bench.md): an agent, headless, on each task's prompt in a throwaway sandbox, for each variant of the plugin's files, and the checks (the suite's checks.py) that score each run.",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"description",
+		"plugin",
+		"project",
+		"agent",
+		"model",
+		"thinking",
+		"repeats",
+		"concurrency",
+		"timeoutMinutes",
+		"guide",
+		"variants",
+		"tasks"
+	],
+	"properties": {
+		"$schema": { "type": "string" },
+		"description": { "description": "What the suite measures.", "$ref": "#/$defs/text" },
+		"plugin": { "description": "The plugin under test, a folder in plugins/plugins/.", "$ref": "#/$defs/name" },
+		"project": {
+			"description": "The made-up project each run starts in, written into the sandbox's project folder and committed.",
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["module", "export", "name", "commit"],
+			"properties": {
+				"module": {
+					"description": "The module, relative to plugins/, that exports the project's files.",
+					"$ref": "#/$defs/text"
+				},
+				"export": {
+					"description": "The module's export holding the files: path → text.",
+					"type": "string",
+					"pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$"
+				},
+				"name": { "description": "The project folder's name.", "$ref": "#/$defs/name" },
+				"commit": { "description": "The message of the project's one commit.", "$ref": "#/$defs/text" }
+			}
+		},
+		"agent": { "description": "The agent that runs the tasks.", "enum": ["omp"] },
+		"model": { "description": "The model, as omp's --model takes it.", "$ref": "#/$defs/text" },
+		"thinking": {
+			"description": "The thinking level, as omp's --thinking takes it.",
+			"enum": ["off", "minimal", "low", "medium", "high", "xhigh", "max", "auto"]
+		},
+		"repeats": { "description": "Runs per variant and task; --repeats overrides it.", "$ref": "#/$defs/count" },
+		"concurrency": { "description": "Runs at a time; --concurrency overrides it.", "$ref": "#/$defs/count" },
+		"timeoutMinutes": {
+			"description": "A run still going after this long is stopped.",
+			"type": "number",
+			"exclusiveMinimum": 0
+		},
+		"guide": {
+			"description": "The plugin-relative file whose reading the read checks look for.",
+			"$ref": "#/$defs/text"
+		},
+		"variants": {
+			"description": "Versions of the plugin: name → files it replaces (plugin-relative path → file relative to the suite folder). {} is the plugin as checked out.",
+			"type": "object",
+			"minProperties": 1,
+			"propertyNames": { "$ref": "#/$defs/name" },
+			"additionalProperties": {
+				"type": "object",
+				"propertyNames": { "minLength": 1 },
+				"additionalProperties": { "$ref": "#/$defs/text" }
+			}
+		},
+		"tasks": {
+			"description": "Task id → the prompt the agent gets and the checks (names in checks.py's CHECKS) that score its runs.",
+			"type": "object",
+			"minProperties": 1,
+			"propertyNames": { "$ref": "#/$defs/name" },
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["prompt", "checks"],
+				"properties": {
+					"prompt": { "$ref": "#/$defs/text" },
+					"checks": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/name" } }
+				}
+			}
+		}
+	},
+	"$defs": {
+		"name": {
+			"description": "Lowercase words joined by -: suites, variants, tasks and checks.",
+			"type": "string",
+			"pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+		},
+		"text": { "type": "string", "minLength": 1 },
+		"count": { "type": "integer", "minimum": 1 }
+	}
+}
