@@ -17,6 +17,10 @@ among its users even when the request mentions only people. Existing conventions
   when input is needed without a TTY or with `--no-input`, fail saying what to run; lists page;
   large results go to a file. Secrets: stdin, then the system credential store (CI, containers:
   the platform's secret mount); never flags, environment variables, files or output.
+- Programs that hold secrets or grant access: the process holding them keeps third-party code to
+  the minimum, pinned and reviewed; the rest, `rpc` and `mcp` included, runs as a separate
+  executable without secrets that calls the core's CLI. Approvals come only from the core's own
+  prompt, never an argument or `input_required`; secrets never travel in `rpc`/`mcp` params.
 
 ## Sessions
 

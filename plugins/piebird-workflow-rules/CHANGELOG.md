@@ -51,7 +51,10 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   credential store, and add a JSON contract (`--json`, `--input`, exit codes, errors, paging) and
   `--help --json`, which prints the operations as MCP tool definitions. A program with live
   state or long operations also runs as one process in two modes, `rpc` (JSON-RPC 2.0) for
-  scripts and `mcp` for agents, with MCP's progress and cancellation in both.
+  scripts and `mcp` for agents, with MCP's progress and cancellation in both. Programs that hold
+  secrets or grant access keep third-party code in the process holding them to a pinned, reviewed
+  minimum and run the rest, `rpc` and `mcp` included, as a separate executable without secrets;
+  approvals come only from their own prompt, and secrets never travel in `rpc`/`mcp` params.
 - Skill `failure-classes`: ten general failure classes, each with its members and how to test them.
 - README, with a demo video: omp fixes a reported bug and the other place with the same flaw,
   with tests.

@@ -22,6 +22,11 @@ change in a new month moves them into a section for the month they were last cha
   as Bun, wheels only). `bun run lint`, `fmt`, `fmt:check`, `typecheck`, `test` and `audit` cover
   it with ruff, mypy (strict), pytest and `uv audit` (`docs/dependencies.md`).
 
+### Changed
+
+- The model page of piebird-workflow-rules (`docs/model/`) shows the `interfaces` rule's new
+  part for programs that hold secrets or grant access.
+
 ## [2026.10] - 2026-10-31
 
 ### Added
