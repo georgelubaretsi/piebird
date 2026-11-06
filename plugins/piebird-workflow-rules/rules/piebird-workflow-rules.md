@@ -44,7 +44,7 @@ likely, and what each option gives and takes away, in plain words.
 
 # Recurring corrections
 
-For every correction, whatever its source (a reported bug is one):
+For every correction, whatever its source (a reported bug or a review finding is one):
 
 1. Weigh it first (Proportion, above). One outside the written scope, or unlikely and minor,
    gets a one-line reply with the reason instead of a fix.
@@ -55,10 +55,20 @@ For every correction, whatever its source (a reported bug is one):
    member, or fault injection. A test for only the reported example isn't enough.
 5. Say what you did: the class, the members found, and the test.
 
-Stop and redesign when:
+Question the approach, not just the code, when:
 - the same area is corrected a second time, or
 - a fix causes a new correction, or
-- two corrections share a cause.
-Write the cause in a few lines and propose a different design or a narrower scope. The main
-agent asks the user before continuing; a subagent stops and reports it to the agent that
-started it.
+- two corrections share a cause, or
+- workarounds pile up around one tool, library or design.
+
+Then stop fixing that area and report:
+- each correction so far: what broke, and the evidence;
+- the shared cause, and whether it lies in our code or in the tool or design we chose;
+- the options, each with what it gives and takes away: the smallest change that ends the
+  repeats, the way mature projects solve it, or a narrower scope; and which you'd pick;
+- what's still uncertain.
+
+Report it even when the user chose the approach: a decision settles what we do, not whether
+its failures get reported. Until the user decides, the main agent keeps to the current
+approach and does the work that doesn't depend on the answer; a subagent stops and reports to
+the agent that started it. Say it once; raise it again only with new evidence.

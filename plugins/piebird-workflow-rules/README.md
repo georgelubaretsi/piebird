@@ -1,9 +1,10 @@
 # piebird-workflow-rules
 
 Rules and a skill on how to work, for any project: weigh problems in proportion, think before
-building, fix a correction as a class of mistakes, use the project's own tools, keep the
-changelog, name commits and branches, design programs that people, scripts and agents can all
-drive, and ask only for real decisions.
+building, fix a correction as a class of mistakes and question the approach when corrections
+repeat, use the project's own tools, keep the changelog, name commits and branches, design
+programs that people, scripts and agents can all drive, ask only for real decisions, make every
+message to the user stand alone, and weigh advice on an answer rather than obey it.
 
 [![omp, Claude Code and Codex fix the same reported bug under the same rules](../../demos/piebird-workflow-rules/demo.webp)](../../demos/piebird-workflow-rules/demo.mp4)
 
@@ -21,8 +22,8 @@ Claude on a Mac or a Windows PC: the piebird installer ([Install](../../README.m
 
 | Rule | What it holds | How omp loads it |
 | --- | --- | --- |
-| `piebird-workflow-rules` | think before building, proportion, recurring corrections | in full, every agent |
-| `piebird-workflow-rules-main` | asking for decisions | in full, the main agent |
+| `piebird-workflow-rules` | think before building, proportion, recurring corrections (and questioning the approach when they repeat) | in full, every agent |
+| `piebird-workflow-rules-main` | asking for decisions, messages that stand alone, advice on an answer | in full, the main agent |
 | `piebird-workflow-rules-reviewer` | what a reviewer reports | in full, the `reviewer` agent |
 | `project-tooling`, `changelog`, `commits-and-branches`, `interfaces` | the project's own tools; changelogs; commit and branch names; program interfaces | listed; the agent reads one when it applies |
 

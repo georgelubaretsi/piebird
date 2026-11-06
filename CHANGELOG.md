@@ -26,6 +26,9 @@ change in a new month moves them into a section for the month they were last cha
 
 - The model page of piebird-workflow-rules (`docs/model/`) shows the `interfaces` rule's new
   part for programs that hold secrets or grant access.
+- The model page of piebird-workflow-rules (`docs/model/`) shows its rules' new parts: when
+  corrections repeat, the agent questions the approach; every message stands alone; advice on an
+  answer is weighed, not obeyed. The catalog in the README lists the last two.
 
 ## [2026.10] - 2026-10-31
 

@@ -61,6 +61,22 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- Rule `piebird-workflow-rules`, recurring corrections: a review finding counts as a correction.
+  Workarounds piling up around one tool, library or design also put the approach in question,
+  besides an area corrected twice, a fix causing a new correction and two corrections sharing a
+  cause. The agent then stops fixing that area and reports each correction with its evidence,
+  the shared cause (our code, or the tool or design chosen), the options with what each gives
+  and takes away (the smallest change, the way mature projects do it, a narrower scope) and what
+  is uncertain; also when the user chose the approach. Until the user decides, the main agent
+  keeps to the current approach and does the work that doesn't depend on the answer, where it
+  used to wait; it says it once, and again only with new evidence.
+- Rule `piebird-workflow-rules-main`, two new sections. Every message to the user stands alone:
+  the whole current answer, whatever prompted it, with one line for what changed. Advice on an
+  answer (an advisory, a review, a notice that judges it) is weighed, not obeyed: correct what
+  is wrong, keep a useful unproven claim marked as an inference with what would settle it,
+  delete only what is false or useless, and send nothing new when nothing changes; the user's
+  instruction wins over advice. A notice stating a fact or an instruction from the harness is
+  followed.
 - The always-applied rules are named for whom they are: `proportion`, `think-before-building`
   and `recurring-corrections` are one rule, `piebird-workflow-rules` (same text, its sections
   pointing at each other); `ask-for-decisions` is `piebird-workflow-rules-main` and
