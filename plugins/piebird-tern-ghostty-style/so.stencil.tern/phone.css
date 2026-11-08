@@ -1,7 +1,8 @@
-/* piebird-tern-ghostty-style, phone: omp's buttons that are nothing but a key cap, on Tern's phone
-   clients (iPhone, Android, a browser tab on a phone). Tern's phone sheet hides every key cap
-   (.kbds, the kbd node's .sf-kbd, and each .kbd in it) as a shortcut hint a touch screen has no use
-   for (seen in Tern 0.9.4 and 0.9.5). Where a key cap is the whole button, the button goes with it:
+/* piebird-tern-ghostty-style, phone: thoughts left open (at the end) and omp's buttons that are
+   nothing but a key cap, on Tern's phone clients (iPhone, Android, a browser tab on a phone).
+   Tern's phone sheet hides every key cap (.kbds, the kbd node's .sf-kbd, and each .kbd in it) as a
+   shortcut hint a touch screen has no use for (seen in Tern 0.9.4 and 0.9.5). Where a key cap is
+   the whole button, the button goes with it:
 
    - Send (omp.composer.send, a kbd node itself): the keyboard's Enter key is left to send a prompt;
    - the esc corner button closing a subagent's transcript (an omp.btn holding only a kbd): phone
@@ -51,4 +52,27 @@ html.tn-phone [data-surface^="omp."] .sf-kbd[data-role="omp.composer.send"] .kbd
 	border-right: 6px solid transparent;
 	border-bottom: 7px solid currentColor;
 	border-left: 6px solid transparent;
+}
+
+/* Thoughts never fold on phones, as on the desktop by default (thoughts-open.css, where the rules are
+   explained). A phone gets this plugin from the host it attaches to, which sends the style sheets
+   but runs no window half there, so the switch that makes thoughts foldable can't reach it: phones
+   keep the default. */
+html.tn-phone .sf-chat-reader[data-surface^="omp."] .sf-section[data-role^="omp.thinking"] > .sf-section-head .sf-chev {
+	display: none;
+}
+
+html.tn-phone
+	.sf-chat-reader[data-surface^="omp."]
+	.sf-section[data-role^="omp.thinking"].collapsed
+	> .sf-section-body {
+	display: flex;
+}
+
+html.tn-phone .sf-chat-reader[data-surface^="omp."] .sf-section.sf-thought-more.collapsed {
+	display: flex;
+}
+
+html.tn-phone .sf-chat-reader[data-surface^="omp."].sf-main > .sf-thought-gone {
+	display: flex;
 }

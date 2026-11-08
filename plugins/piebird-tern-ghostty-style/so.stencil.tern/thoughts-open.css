@@ -1,0 +1,24 @@
+/* piebird-tern-ghostty-style, thoughts left open: omp's thoughts never fold, as in Ghostty. Not one of
+   plugin.toml's styles: window.luau installs this sheet while the switch says "open" (the default)
+   and empties it once the command makes thoughts foldable, which gives Tern's own fold back.
+   phone.css keeps a copy for phones, which get the style sheets from their host but no window half.
+
+   The text is in the DOM even when folded; Tern only hides it. The head stays for what it says
+   (Thinking… with its timer and rate while live, then "Thought for Ns", tokens on hover); only its
+   chevron goes, as folding does nothing here. A chain of thoughts hides its followers, and any
+   message holding only followers, while folded; those stay shown. */
+.sf-chat-reader[data-surface^="omp."] .sf-section[data-role^="omp.thinking"] > .sf-section-head .sf-chev {
+	display: none;
+}
+
+.sf-chat-reader[data-surface^="omp."] .sf-section[data-role^="omp.thinking"].collapsed > .sf-section-body {
+	display: flex;
+}
+
+.sf-chat-reader[data-surface^="omp."] .sf-section.sf-thought-more.collapsed {
+	display: flex;
+}
+
+.sf-chat-reader[data-surface^="omp."].sf-main > .sf-thought-gone {
+	display: flex;
+}

@@ -1,26 +1,6 @@
-/* piebird-tern-ghostty-style, text: thoughts, colours, replies, tables, your messages and the composer. Every
-   rule is scoped to omp's surfaces ([data-surface^='omp.']), not other plugins' blocks. */
-
-/* Thoughts never fold, as in Ghostty. The text is in the DOM even when folded; Tern
-   only hides it. The head stays for what it says (Thinking… with its timer and rate
-   while live, then "Thought for Ns", tokens on hover); only its chevron goes, as
-   folding does nothing here. A chain of thoughts hides its followers, and any message
-   holding only followers, while folded; those stay shown. */
-.sf-chat-reader[data-surface^="omp."] .sf-section[data-role^="omp.thinking"] > .sf-section-head .sf-chev {
-	display: none;
-}
-
-.sf-chat-reader[data-surface^="omp."] .sf-section[data-role^="omp.thinking"].collapsed > .sf-section-body {
-	display: flex;
-}
-
-.sf-chat-reader[data-surface^="omp."] .sf-section.sf-thought-more.collapsed {
-	display: flex;
-}
-
-.sf-chat-reader[data-surface^="omp."].sf-main > .sf-thought-gone {
-	display: flex;
-}
+/* piebird-tern-ghostty-style, text: thoughts' colour, colours, replies, tables, your messages and the composer.
+   Every rule is scoped to omp's surfaces ([data-surface^='omp.']), not other plugins' blocks. Whether
+   thoughts fold is a switch: thoughts-open.css, which window.luau installs. */
 
 /* Text in the colours omp shows in Ghostty. Tern raises omp's palette text to 4.5:1
    contrast and colours body text with its own theme, so these are pinned: body text

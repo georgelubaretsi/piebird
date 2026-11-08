@@ -27,6 +27,12 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   shortcut hints, and these two buttons are drawn as nothing but one: a prompt went only with the
   keyboard's Enter key, and the transcript had no button to close it. Version 0.1.1, so omp
   replaces a look an earlier version installed in Tern (after `omp plugin upgrade`).
+- Thoughts can fold: ⌥⌘T, or **Fold thoughts** in Tern's command palette, switches from thoughts
+  left open (still the default) to Tern's own fold, where the chevron shows and a click on a
+  thought's head folds and opens it; ⌥⌘T again, or **Keep thoughts open**, switches back. Tern
+  keeps the choice across restarts, for every window. Phones keep thoughts open, and the web tab
+  in a desktop browser folds them as Tern does: neither runs the plugin's code the switch needs.
+  Version 0.2.0, so omp replaces 0.1.5 in Tern.
 
 ### Fixed
 
