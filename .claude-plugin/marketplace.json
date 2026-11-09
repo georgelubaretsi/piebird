@@ -67,7 +67,7 @@
     {
       "name": "piebird-workflow-rules",
       "source": "./plugins/piebird-workflow-rules",
-      "description": "How to work: weigh problems and advice in proportion, think before building, fix corrections as classes, failure classes to check, project tooling, changelogs, commit and branch names, program interfaces, when to ask and messages that stand alone",
+      "description": "How to work: weigh problems and advice in proportion, think before building, fix corrections as classes, failure classes to check, project tooling, changelogs, commit and branch names, program interfaces, workspace layout, when to ask and messages that stand alone",
       "author": {
         "name": "George Lubaretsi",
         "email": "george@lubaretsi.com"

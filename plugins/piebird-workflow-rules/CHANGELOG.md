@@ -55,6 +55,15 @@ and this plugin adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
   secrets or grant access keep third-party code in the process holding them to a pinned, reviewed
   minimum and run the rest, `rpc` and `mcp` included, as a separate executable without secrets;
   approvals come only from their own prompt, and secrets never travel in `rpc`/`mcp` params.
+- Rule `workspace-layout` (main agent, read when it applies): a workspace is an umbrella git repo
+  with an allowlist `.gitignore` and a `workspace.repos` list (vcs2l); each repo's worktrees sit
+  beside it as `<repo>-<slug>`, never inside a checkout; a repo too big to check out whole gets a
+  sparse worktree; upstream sources are flake inputs linked at `reference/<name>`; data lives in
+  DVC (one `.dvc` file per folder, a DVC remote, one shared cache); program state in
+  `~/.local/state/<project>/`.
+- Rules `nix-copies-folder` and `worktree-beside-repo`, watched in every agent: omp stops a tool
+  call that hands Nix a folder (`path:`, `getFlake` of a plain path) or makes a worktree inside a
+  checkout before it runs, and gives the agent the rule. They cost nothing until one fires.
 - Skill `failure-classes`: ten general failure classes, each with its members and how to test them.
 - README, with a demo video: omp fixes a reported bug and the other place with the same flaw,
   with tests.

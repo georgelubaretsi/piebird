@@ -29,6 +29,10 @@ change in a new month moves them into a section for the month they were last cha
 - The model page of piebird-workflow-rules (`docs/model/`) shows its rules' new parts: when
   corrections repeat, the agent questions the approach; every message stands alone; advice on an
   answer is weighed, not obeyed. The catalog in the README lists the last two.
+- The model pages (`docs/model/`) say where omp puts each rule: a rule with a `condition` is in
+  no prompt, with the calls omp watches and what it matches; a rule read on demand names whose
+  rules list it is in. The page of piebird-workflow-rules shows its new rules `workspace-layout`,
+  `nix-copies-folder` and `worktree-beside-repo`, and the catalog in the README names them.
 
 ## [2026.10] - 2026-10-31
 

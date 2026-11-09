@@ -118,7 +118,10 @@ Read one of these rules when its description fits your work:
 - changelog: Every project keeps a CHANGELOG.md; every change users would notice adds an entry in the same change (/home/user/plugins/piebird-workflow-rules/rules/changelog.md)
 - commits-and-branches: Name commits per Conventional Commits 1.0.0 and branches feat/, fix/, hotfix/ or chore/<slug>, unless the project names them its own way (/home/user/plugins/piebird-workflow-rules/rules/commits-and-branches.md)
 - interfaces: You MUST read this before building or changing any CLI, UI or API; it defines the required contract (JSON in and out, exit codes, errors, MCP tool list) (/home/user/plugins/piebird-workflow-rules/rules/interfaces.md)
+- nix-copies-folder: Never give Nix a folder as a `path:` reference or `getFlake` of a plain path; it copies the whole folder into the store (/home/user/plugins/piebird-workflow-rules/rules/nix-copies-folder.md)
 - project-tooling: Use the project's own tools and commands (dev shell, scripts, lockfiles, task runner, CI steps) instead of globally installed tools or ad-hoc commands; how to write AGENTS.md (/home/user/plugins/piebird-workflow-rules/rules/project-tooling.md)
+- workspace-layout: Worktrees go beside their repo as <repo>-<slug>, never inside a checkout or copied from one; read before making a worktree, cloning a repo or adding upstream sources, data or program state (/home/user/plugins/piebird-workflow-rules/rules/workspace-layout.md)
+- worktree-beside-repo: Make worktrees beside their repo as ../<repo>-<slug>, never inside a checkout (/home/user/plugins/piebird-workflow-rules/rules/worktree-beside-repo.md)
 ```
 
 From [`rule`](../../plugins/piebird-workflow-rules/core/model.ftl#L3), [`rule-entry`](../../plugins/piebird-workflow-rules/core/model.ftl#L5), [`rules-on-demand`](../../plugins/piebird-workflow-rules/core/model.ftl#L4).
@@ -350,7 +353,7 @@ and a secret scanner.
 
 ### Rule `changelog`
 
-In omp's rules list (`changelog`: Every project keeps a CHANGELOG.md; every change users would notice adds an entry in the same change); `rule://changelog` reads its body:
+In the rules list of every omp agent (`changelog`: Every project keeps a CHANGELOG.md; every change users would notice adds an entry in the same change); `rule://changelog` reads its body:
 
 ````text
 # Changelog
@@ -391,7 +394,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Rule `commits-and-branches`
 
-In omp's rules list (`commits-and-branches`: Name commits per Conventional Commits 1.0.0 and branches feat/, fix/, hotfix/ or chore/<slug>, unless the project names them its own way); `rule://commits-and-branches` reads its body:
+In the rules list of every omp agent (`commits-and-branches`: Name commits per Conventional Commits 1.0.0 and branches feat/, fix/, hotfix/ or chore/<slug>, unless the project names them its own way); `rule://commits-and-branches` reads its body:
 
 ```text
 # Commits and branches
@@ -407,7 +410,7 @@ Names only; when and how to branch, merge and release is the project's. Its own 
 
 ### Rule `interfaces`
 
-In omp's rules list (`interfaces`: You MUST read this before building or changing any CLI, UI or API; it defines the required contract (JSON in and out, exit codes, errors, MCP tool list)); `rule://interfaces` reads its body:
+In the rules list of every omp agent (`interfaces`: You MUST read this before building or changing any CLI, UI or API; it defines the required contract (JSON in and out, exit codes, errors, MCP tool list)); `rule://interfaces` reads its body:
 
 ```text
 # Interfaces
@@ -446,6 +449,16 @@ Live state stays in that process; data that should outlive it gets an id one-sho
 Long operations send `notifications/progress` when `_meta.progressToken` is set and stop on
 `notifications/cancelled` (`requestId`), with those exact names, in both modes. A decision needed
 mid-way: MCP's `input_required` in `mcp`, otherwise an argument or a clear failure.
+```
+
+### Rule `nix-copies-folder`
+
+In no prompt: omp watches tool:bash, tool:eval, tool:edit(*.nix), tool:write(*.nix) of every omp agent for `\bnix\b[^\n]*\bpath:`, `getFlake(?:\s|\\[nt])*\(?(?:\s|\\[nt])*(?:\((?:\s|\\[nt])*toString|\\?"?[./~])`, `url\s*=\s*\\?"path:`, stops a matching call before it runs and gives the agent its body:
+
+```text
+`path:` references and `getFlake` of a plain path make Nix copy the whole folder into the store,
+git-ignored repos, `.git` and build output included. Use `.#<attr>` from inside the repo, or
+`git+file:///<repo>?rev=<commit>`.
 ```
 
 ### Rule `piebird-workflow-rules-main`
@@ -582,7 +595,7 @@ the agent that started it. Say it once; raise it again only with new evidence.
 
 ### Rule `project-tooling`
 
-In omp's rules list (`project-tooling`: Use the project's own tools and commands (dev shell, scripts, lockfiles, task runner, CI steps) instead of globally installed tools or ad-hoc commands; how to write AGENTS.md); `rule://project-tooling` reads its body:
+In the rules list of every omp agent (`project-tooling`: Use the project's own tools and commands (dev shell, scripts, lockfiles, task runner, CI steps) instead of globally installed tools or ad-hoc commands; how to write AGENTS.md); `rule://project-tooling` reads its body:
 
 ```text
 # Project tooling
@@ -609,5 +622,44 @@ In omp's rules list (`project-tooling`: Use the project's own tools and commands
   Leave mechanical checks to CI and linters.
 - Describe what the project protects, who acts, where data crosses a boundary and what is out
   of scope in `docs/threat-model.md`.
+```
+
+### Rule `workspace-layout`
+
+In the rules list of omp's main agent (`workspace-layout`: Worktrees go beside their repo as <repo>-<slug>, never inside a checkout or copied from one; read before making a worktree, cloning a repo or adding upstream sources, data or program state); `rule://workspace-layout` reads its body:
+
+````text
+# Workspace layout
+
+```
+<workspace>/          umbrella git repo (every workspace has one)
+  .gitignore          allowlist: /*, then !/<file> for each tracked file
+  workspace.repos     repos to clone (vcs2l)
+  <repo>/             a repo, ignored
+  <repo>-<slug>/      its worktree for branch <type>/<slug>, ignored
+  reference/<name>    link to an upstream source, ignored
+```
+
+- A repo's checkout holds its tracked files and its build output, nothing else.
+- Worktree: `git -C <repo> worktree add -b <type>/<slug> ../<repo>-<slug> origin/<branch>`;
+  remove it once merged. A repo too big to check out whole: add `--no-checkout`, then in the
+  worktree `git sparse-checkout set --cone --sparse-index <dirs>` and `git checkout`.
+- Upstream source: a flake input with `flake = false`, linked at `reference/<name>` by the dev
+  shell. A source that is only web pages: a scheduled job in a repo of yours fetches and commits
+  it; pin that repo.
+- Data: a data repo whose git tracks one `.dvc` file per folder: `dvc add <folder>`, commit the
+  `.dvc` file, `dvc push`. Every data repo and worktree shares one cache:
+  `dvc cache dir --global ~/.local/share/dvc/cache`.
+- Program state: `~/.local/state/<project>/`.
+````
+
+### Rule `worktree-beside-repo`
+
+In no prompt: omp watches tool:bash, tool:eval of every omp agent for `worktree(?:\s|\\\n|\\\\\\n)+add(?:(?:\s|\\\n|\\\\\\n)+(?:-[bB](?:\s|\\\n|\\\\\\n)+(?:\\?["'][^"'\\]*\\?["']|[^\s"'\\]+)|--[\w-]*|-[^bB\s-]\w*))*(?:\s|\\\n|\\\\\\n)+(?:\\?["'])?(?!\.\./)(?!-)[^\s"'\\]+(?:\s|\\?["']|\\)`, stops a matching call before it runs and gives the agent its body:
+
+```text
+Worktrees go beside their repo, never inside a checkout, where everything that copies or walks
+the checkout reaches them: `git -C <repo> worktree add -b <type>/<slug> ../<repo>-<slug>
+origin/<branch>`.
 ```
 

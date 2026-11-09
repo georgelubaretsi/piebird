@@ -2,8 +2,10 @@
 // reads a plugin's skills itself: each lists a skill's name and description, and the agent reads
 // the whole SKILL.md (and the files it points to) when the description fits the task. Rules are
 // omp's: an always-applied rule's body is in the system prompt of the agents it is for (every agent
-// without `agents`), any other rule is a line in the rules list whose body rule:// reads. Where a
-// plugin gives Claude Code or Codex its rules, its shell does, and the scripted session shows it.
+// without `agents`); a rule with a `condition` (TTSR) is in no prompt, and omp gives its body when
+// a call it watches matches; any other rule is a line in those agents' rules list whose body
+// rule:// reads. Where a plugin gives Claude Code or Codex its rules, its shell does, and the
+// scripted session shows it.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, sep } from "node:path";
 import { isObject } from "../build/json";
@@ -51,10 +53,29 @@ function skills(plugin: string): string[] {
 		});
 }
 
-/** Whose system prompt an always-applied rule is in, from its `agents` (absent: every agent's). */
+/** Whose prompt or calls a rule reaches, from its `agents` (absent: every agent's). */
 function audience(agents: unknown): string {
-	const named = typeof agents === "string" ? [agents] : Array.isArray(agents) ? agents.map(text) : [];
+	const named = list(agents);
 	return named.length === 0 ? "every omp agent" : `omp's ${named.join(" and ")} agent`;
+}
+
+/** A front matter value that YAML gives as a string or a list of them. */
+function list(value: unknown): string[] {
+	return typeof value === "string" ? [value] : Array.isArray(value) ? value.map(text) : [];
+}
+
+/** Where omp puts the rule `name`, from its front matter. */
+function placement(name: string, front: Readonly<Record<string, unknown>>): string {
+	if (front.alwaysApply === true)
+		return `In the system prompt of ${audience(front.agents)}, without its front matter:`;
+	if (front.condition !== undefined) {
+		const watched = list(front.scope).join(", ") || "text and tool calls";
+		const conditions = list(front.condition)
+			.map(condition => `\`${condition}\``)
+			.join(", ");
+		return `In no prompt: omp watches ${watched} of ${audience(front.agents)} for ${conditions}, stops a matching call before it runs and gives the agent its body:`;
+	}
+	return `In the rules list of ${audience(front.agents)} (\`${name}\`: ${text(front.description)}); \`rule://${name}\` reads its body:`;
 }
 
 function rules(plugin: string): string[] {
@@ -66,11 +87,7 @@ function rules(plugin: string): string[] {
 		.flatMap(file => {
 			const { front, body } = frontAndBody(join(dir, file));
 			const name = file.slice(0, -3);
-			const when =
-				front.alwaysApply === true
-					? `In the system prompt of ${audience(front.agents)}, without its front matter:`
-					: `In omp's rules list (\`${name}\`: ${text(front.description)}); \`rule://${name}\` reads its body:`;
-			return [`### Rule \`${name}\``, "", when, "", fenced(body)];
+			return [`### Rule \`${name}\``, "", placement(name, front), "", fenced(body)];
 		});
 }
 

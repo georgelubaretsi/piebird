@@ -3,8 +3,9 @@
 Rules and a skill on how to work, for any project: weigh problems in proportion, think before
 building, fix a correction as a class of mistakes and question the approach when corrections
 repeat, use the project's own tools, keep the changelog, name commits and branches, design
-programs that people, scripts and agents can all drive, ask only for real decisions, make every
-message to the user stand alone, and weigh advice on an answer rather than obey it.
+programs that people, scripts and agents can all drive, lay out workspaces and stop commands
+that copy whole folders, ask only for real decisions, make every message to the user stand
+alone, and weigh advice on an answer rather than obey it.
 
 [![omp, Claude Code and Codex fix the same reported bug under the same rules](../../demos/piebird-workflow-rules/demo.webp)](../../demos/piebird-workflow-rules/demo.mp4)
 
@@ -26,10 +27,13 @@ Claude on a Mac or a Windows PC: the piebird installer ([Install](../../README.m
 | `piebird-workflow-rules-main` | asking for decisions, messages that stand alone, advice on an answer | in full, the main agent |
 | `piebird-workflow-rules-reviewer` | what a reviewer reports | in full, the `reviewer` agent |
 | `project-tooling`, `changelog`, `commits-and-branches`, `interfaces` | the project's own tools; changelogs; commit and branch names; program interfaces | listed; the agent reads one when it applies |
+| `workspace-layout` | where repos, worktrees, upstream sources, data and program state go | listed, the main agent; it reads it when it applies |
+| `nix-copies-folder`, `worktree-beside-repo` | Nix given a folder instead of a git repo; a worktree inside a checkout | watched, every agent: a tool call that breaks one stops before it runs, and the agent gets the rule |
 
 Claude Code doesn't load rules from a plugin, so the plugin's mod puts them in a block of the
 conversation's context: the always-applied ones for the main agent in full, the others by name
-and file; the reviewer's rule stays out. Codex gets the skill.
+and file, the watched ones too (nothing stops a call there); the reviewer's rule stays out.
+Codex gets the skill.
 
 The skill `failure-classes` lists ten general failure classes, each with its members and how to
 test them.
